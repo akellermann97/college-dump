@@ -1,0 +1,129 @@
+Load map
+========
+
+Module:  cell_auto_sim.obj
+ Text segment:  408 bytes, load point 0x00400000
+ Data segment:  616 bytes, load point 0x10000000
+ Symbols:
+                                    Name Section Mode    Value
+                         rule_intro_text   Data   R   0x10000142
+                      invalid_rule_error   Text   R   0x00400138
+                       invalid_row_error   Text   R   0x00400168
+                                READ_INT          A   0x00000005
+                                new_line   Data   R   0x10000264
+                     binary_row_loop_end   Text   R   0x004000b0
+                     running_generations   Text   R   0x00400108
+                    end_generations_loop   Text   R   0x00400128
+                         invalid_gen_num   Data   R   0x100000af
+                            PRINT_STRING          A   0x00000004
+                       illegal_input_val   Data   R   0x10000112
+                                    main   Text   RG  0x00400000
+                        invalid_row_size   Data   R   0x100000e5
+                              intro_text   Data   R   0x10000000
+                            binary_input   Data   R   0x10000148
+                                    EXIT          A   0x0000000a
+                   binary_row_loop_begin   Text   R   0x00400080
+                       invalid_gen_error   Text   R   0x00400150
+                            invalid_rule   Data   R   0x1000007f
+                    binary_row_error_out   Text   R   0x00400180
+                         binary_row_prep   Text   R   0x00400070
+                               PRINT_INT          A   0x00000001
+
+Module:  binary_convert.obj
+ Text segment:  280 bytes, load point 0x00400198
+ Data segment:  48 bytes, load point 0x10000268
+ Symbols:
+                                    Name Section Mode    Value
+                       convert_to_binary   Text   R   0x004001b8
+                     done_with_print_num   Text   R   0x0040028c
+  print_converted_binary_number_2_screen   Text   R   0x0040024c
+                              open_paren   Data   R   0x1000028c
+                                READ_INT          A   0x00000005
+                    print_bin_loop_2_scr   Text   R   0x00400258
+                        print_open_paren   Text   R   0x00400238
+                                   print   Text   R   0x004001e4
+                               print_bin   Text   R   0x004001b8
+                      print_closed_paren   Text   R   0x00400278
+                address_of_converted_num   Text   RG  0x004002a4
+                          shifting_stuff   Text   R   0x004001f8
+                 print_bin_loop_finished   Text   R   0x00400278
+                           converted_num   Data   R   0x10000268
+                       done_with_convert   Text   R   0x00400204
+                               print_num   Text   RG  0x00400224
+                            PRINT_STRING          A   0x00000004
+                                    loop   Text   R   0x004001cc
+                            closed_paren   Data   R   0x1000028f
+                                    EXIT          A   0x0000000a
+                        convert_to_binny   Text   RG  0x00400198
+                               PRINT_INT          A   0x00000001
+
+Module:  cell_display.obj
+ Text segment:  1064 bytes, load point 0x004002b0
+ Data segment:  760 bytes, load point 0x10000298
+ Symbols:
+                                    Name Section Mode    Value
+                                  cell_0   Data   R   0x100004fc
+                                  cell_1   Data   R   0x10000508
+                                  cell_2   Data   R   0x10000514
+                                  cell_3   Data   R   0x10000520
+                    what_happens_to_cell   Data   R   0x1000057e
+                                  cell_4   Data   R   0x1000052c
+                         exit_scale_loop   Text   R   0x0040033c
+                                  cell_5   Data   R   0x10000538
+                                  cell_6   Data   R   0x10000544
+                                  cell_7   Data   R   0x10000550
+                               temp_cell   Data   R   0x1000055c
+                         scale_loop_jump   Text   R   0x00400300
+                       generate_row_prep   Text   RG  0x0040039c
+                                   minus   Data   R   0x10000298
+                continue_printing_number   Text   R   0x00400374
+                            did_cell_die   Text   R   0x0040043c
+                            row_b_is_cur   Text   R   0x00400400
+                              scale_loop   Text   R   0x004002e4
+                        new_line_display   Data   R   0x100002a0
+                             print_text1   Data   R   0x10000568
+                             print_text2   Data   R   0x10000573
+                        current_num_zero   Text   R   0x0040045c
+                                READ_INT          A   0x00000005
+                        cell_been_filled   Text   R   0x00400438
+                                   empty   Data   R   0x1000029a
+                                     dot   Data   R   0x100002a2
+                   print_my_buffer_space   Text   R   0x004002d0
+                     cell_survive_or_die   Text   R   0x00400534
+                                   row_a   Data   R   0x100002c0
+                                   row_b   Data   R   0x100003dc
+                       get_row_a_address   Text   RG  0x004002b0
+                      current_row_number   Data   R   0x100004f8
+                      generate_row_begin   Text   R   0x00400414
+                                    cero   Data   R   0x1000029e
+                          fill_cell_last   Text   R   0x004004fc
+                            PRINT_STRING          A   0x00000004
+                            row_a_is_cur   Text   R   0x004003e8
+                           right_justify   Text   R   0x0040034c
+                         is_tenth_column   Text   R   0x00400320
+                                    plus   Data   R   0x1000029c
+                         fill_cell_first   Text   R   0x004004d4
+                             check_cell0   Text   R   0x00400564
+                             check_cell1   Text   R   0x00400598
+                             check_cell2   Text   R   0x004005cc
+                             check_cell3   Text   R   0x00400600
+                             check_cell4   Text   R   0x00400634
+                             check_cell5   Text   R   0x00400668
+                         is_fifth_column   Text   R   0x00400304
+                             check_cell6   Text   R   0x0040069c
+                             check_cell7   Text   R   0x004006d0
+                               fill_cell   Text   R   0x004004a4
+                       print_current_row   Text   RG  0x00400360
+                                   alpha   Data   R   0x100002a4
+                                    EXIT          A   0x0000000a
+                             print_scale   Text   RG  0x004002bc
+                               PRINT_INT          A   0x00000001
+                              PRINT_CHAR          A   0x0000000b
+                        generate_row_end   Text   R   0x00400470
+
+Module:  r2k_startup.obj
+ Text segment:  36 bytes, load point 0x004006d8
+ Symbols:
+                                    Name Section Mode    Value
+                               SYS_EXIT2          A   0x00000011
+                          __r2k__entry__   Text   RG  0x004006dc

@@ -1,0 +1,285 @@
+   1 0000               ##############################################################################
+   2 0000               # File        : main.asm
+   3 0000               # Author      : Alexander Kellermann Nieves
+   4 0000               #
+   5 0000               # Description : This is the main entry point of the program. All the error
+   6 0000               # messages originate from here, and cause the program to end while in this
+   7 0000               # particular file. This file also contains the data for the binary_input that
+   8 0000               # the users puts, but does not contain the data for the binary representation
+   9 0000               # of the rule number in binary. 
+  10 0000               ##############################################################################
+  11 0000               
+  12 0000               PRINT_INT    = 1
+  13 0000               PRINT_STRING = 4
+  14 0000               READ_INT     = 5
+  15 0000               EXIT         = 10
+  16 0000               
+  17 0000                       .align 0
+  18 0000                       .data
+  19 0000               
+  20 0000               intro_text:
+  21 0000 2A2A2A2A	        .ascii  "*****************************************\n"
+          2A2A2A2A
+          2A2A2A2A
+          2A2A2A2A
+          2A2A2A2A
+          2A2A2A2A
+  22 002a 2A2A2020	        .ascii  "**     Cellular Automata Simulator     **\n"
+          20202043
+          656C6C75
+          6C617220
+          4175746F
+          6D617461
+  23 0054 2A2A2A2A	        .asciiz "*****************************************\n"
+          2A2A2A2A
+          2A2A2A2A
+          2A2A2A2A
+          2A2A2A2A
+          2A2A2A2A
+  24 007f               
+  25 007f               invalid_rule:
+  26 007f 496E7661	        .asciiz "Invalid rule number, cell-auto-sim terminating\n"
+          6C696420
+          72756C65
+          206E756D
+          6265722C
+          2063656C
+  27 00af               
+  28 00af               invalid_gen_num:
+  29 00af 496E7661	        .asciiz "Invalid generation number, cell-auto-sim terminating\n"
+          6C696420
+          67656E65
+          72617469
+          6F6E206E
+          756D6265
+  30 00e5               
+  31 00e5               invalid_row_size:
+  32 00e5 496E7661	        .asciiz "Invalid row size, cell-auto-sim terminating\n"
+          6C696420
+          726F7720
+          73697A65
+          2C206365
+          6C6C2D61
+  33 0112               
+  34 0112               illegal_input_val:
+  35 0112 496C6C65	        .asciiz "Illegal input value, cell-auto-sim terminating\n"
+          67616C20
+          696E7075
+          74207661
+          6C75652C
+          2063656C
+  36 0142               
+  37 0142               rule_intro_text:
+  38 0142 52756C65	        .asciiz "Rule "
+          2000    
+  39 0148               
+  40 0148               binary_input:
+  41 0148 00000000	        .space 284
+          00000000
+          00000000
+          00000000
+          00000000
+          00000000
+  42 0264               
+  43 0264               new_line:
+  44 0264 0A00    	        .asciiz "\n"
+  45 0266               
+  46 0266 0000    	        .align 2
+  47 0000                       .text
+  48 0000                       .globl  main
+  49 0000                       .globl  convert_to_binny
+  50 0000                       .globl  print_num
+  51 0000                       .globl  print_scale
+  52 0000                       .globl  print_current_row
+  53 0000                       .globl  generate_row_prep
+  54 0000                       .globl  get_row_a_address
+  55 0000               
+  56 0000               main:
+  57 0000 340F0000	        li      $t7, 0                          # We use this as a row counter
+  58 0004                                                               # in cell_display.asm (we use
+  59 0004                                                               # it to keep track of which row
+  60 0004                                                               # to print)
+  61 0004               
+  62 0004 34020005	        li      $v0, READ_INT                   # accepting rule number
+  63 0008 0000000C	        syscall
+  64 000c 00408021	        move    $s0, $v0                        # store rule number in s0, do
+  65 0010                                                               # not change this.
+  66 0010               
+  67 0010                                                               # Check if rule number is valid
+  68 0010 34090100	        li      $t1, 256                        # setting it to 256 means that
+  69 0014                                                               # 255 is the largest value
+  70 0014 0209502A	        slt     $t2, $s0, $t1                   # t2 is 1 is s0 greater than 255
+  71 0018 11400047	        beq     $t2, $zero, invalid_rule_error  # error out
+  72 001c 2409FFFF	        li      $t1, -1
+  73 0020 0130502A	        slt     $t2, $t1, $s0                   # t2 is 1 when s0 less than 0
+  74 0024 11400044	        beq     $t2, $zero, invalid_rule_error  # error out
+  75 0028               
+  76 0028               
+  77 0028 34020005	        li      $v0, READ_INT                   # number of generations to simulate
+  78 002c 0000000C	        syscall
+  79 0030 00408821	        move    $s1, $v0                        # store the amount of
+  80 0034                                                               # generations to simulate. We do        
+  81 0034                                                               # change this in the program so be weary
+  82 0034               
+  83 0034 3409001A	        li      $t1, 26                         # Check if generation number is valid
+  84 0038 0229502A	        slt     $t2, $s1, $t1                   # t2 is 1 is s0 greater than 25
+  85 003c 11400044	        beq     $t2, $zero, invalid_gen_error   # error out
+  86 0040 2409FFFF	        li      $t1, -1
+  87 0044 0131502A	        slt     $t2, $t1, $s1                   # t2 is 1 when s0 less than 0
+  88 0048 11400041	        beq     $t2, $zero, invalid_gen_error   # error out
+  89 004c               
+  90 004c 34020005	        li      $v0, READ_INT                   # read the row size
+  91 0050 0000000C	        syscall
+  92 0054 00409021	        move    $s2, $v0                        # store the row size in $s2
+  93 0058                                                               # and it does not change
+  94 0058               
+  95 0058 34090047	        li      $t1, 71                         # Check if row number is valid
+  96 005c 0249502A	        slt     $t2, $s2, $t1                   # t2 is 1 is s0 greater than 25
+  97 0060 11400041	        beq     $t2, $zero, invalid_row_error
+  98 0064 34090000	        li      $t1, 0
+  99 0068 0132502A	        slt     $t2, $t1, $s2                   # t2 is 1 when s0 less than 0
+ 100 006c 1140003E	        beq     $t2, $zero, invalid_row_error
+ 101 0070               
+ 102 0070                       
+ 103 0070                       
+ 104 0070               binary_row_prep:
+ 105 0070 34160000	        li      $s6, 0                          # start the loop where we take in 
+ 106 0074                                                               # all the input, make sure they're all
+ 107 0074 340E0002	        li      $t6, 2                          # zero's and ones, and store them in "binary_input"
+ 108 0078 0C000000	        jal     get_row_a_address
+ 109 007c 00406821	        move    $t5, $v0
+ 110 0080               
+ 111 0080               binary_row_loop_begin: 
+ 112 0080 12D2000B	        beq     $s6, $s2, binary_row_loop_end   # check if we reached the size
+ 113 0084 34020005	        li      $v0, READ_INT                   # of the row yet. If so, stop.
+ 114 0088 0000000C	        syscall
+ 115 008c                       
+ 116 008c 00404821	        move    $t1, $v0                        # move our precious value to t1
+ 117 0090 0120502A	        slt     $t2, $t1, $zero                 # check if less than 0
+ 118 0094 1540003A	        bne     $t2, $zero, binary_row_error_out
+ 119 0098 012E502A	        slt     $t2, $t1, $t6                   # check if less than 2
+ 120 009c 11400038	        beq     $t2, $zero, binary_row_error_out
+ 121 00a0               
+ 122 00a0                      
+ 123 00a0 ADA90000	        sw      $t1, 0($t5)                     # if we're here, we know the value is 
+ 124 00a4 21AD0004	        addi    $t5, $t5, 4                     # valid, so we add it to our array
+ 125 00a8               
+ 126 00a8 22D60001	        addi    $s6, $s6, 1
+ 127 00ac 08000020	        j       binary_row_loop_begin
+ 128 00b0               
+ 129 00b0               binary_row_loop_end:
+ 130 00b0               
+ 131 00b0 34020004	        li      $v0, PRINT_STRING       # print the banner
+ 132 00b4 3C040000	        la      $a0, intro_text
+     00b8 34840000
+ 133 00bc 0000000C	        syscall
+ 134 00c0               
+ 135 00c0 34020004	        li      $v0, PRINT_STRING       # print the new line
+ 136 00c4 3C040000	        la      $a0, new_line
+     00c8 34840000
+ 137 00cc 0000000C	        syscall
+ 138 00d0                       # finish printing new line
+ 139 00d0                       
+ 140 00d0 34020004	        li      $v0, PRINT_STRING       # print the rule number + binary
+ 141 00d4 3C040000	        la      $a0, rule_intro_text
+     00d8 34840000
+ 142 00dc 0000000C	        syscall
+ 143 00e0               
+ 144 00e0 34020001	        li      $v0, PRINT_INT          # print the rule number (decimal)
+ 145 00e4 02002021	        move    $a0, $s0
+ 146 00e8 0000000C	        syscall
+ 147 00ec                                                       # now print the binary portion
+ 148 00ec 0C000000	        jal     convert_to_binny        # Converts decimal to binary
+ 149 00f0 0C000000	        jal     print_num               # Prints the binary representation
+ 150 00f4 34080008	        li      $t0, 8
+ 151 00f8 00805021	        move    $t2, $a0
+ 152 00fc               
+ 153 00fc               
+ 154 00fc 02402021	        move    $a0, $s2                # Now we print the scale
+ 155 0100 0C000000	        jal     print_scale
+ 156 0104 22310001	        addi    $s1, $s1, 1
+ 157 0108               
+ 158 0108               running_generations:
+ 159 0108                                                       # Print all the runs of the program
+ 160 0108 02402021	        move    $a0, $s2                # move row size
+ 161 010c 0C000000	        jal     print_current_row       # prints the row and space
+ 162 0110 02402021	        move    $a0, $s2                # moves row size
+ 163 0114 02202821	        move    $a1, $s1                # moves row number
+ 164 0118 0C000000	        jal     generate_row_prep       # generate generation
+ 165 011c 2231FFFF	        addi    $s1, $s1, -1            # decrement remaining rows
+ 166 0120 12200001	        beq     $s1, $zero, end_generations_loop
+ 167 0124 08000042	        j       running_generations
+ 168 0128               
+ 169 0128               end_generations_loop: 
+ 170 0128               
+ 171 0128 02402021	        move    $a0, $s2                # Print the scale again
+ 172 012c 0C000000	        jal     print_scale
+ 173 0130               
+ 174 0130 3402000A	        li      $v0, EXIT               # Exit program successfully
+ 175 0134 0000000C	        syscall
+ 176 0138               
+ 177 0138               #################################################
+ 178 0138               # Below this line there is only code for errors #
+ 179 0138               #################################################
+ 180 0138               
+ 181 0138               invalid_rule_error:
+ 182 0138 34020004	        li      $v0, PRINT_STRING
+ 183 013c 3C040000	        la      $a0, invalid_rule
+     0140 34840000
+ 184 0144 0000000C	        syscall
+ 185 0148 3402000A	        li      $v0, EXIT               # Exit
+ 186 014c 0000000C	        syscall
+ 187 0150               
+ 188 0150               invalid_gen_error:
+ 189 0150 34020004	        li      $v0, PRINT_STRING
+ 190 0154 3C040000	        la      $a0, invalid_gen_num
+     0158 34840000
+ 191 015c 0000000C	        syscall
+ 192 0160 3402000A	        li      $v0, EXIT               # Exit 
+ 193 0164 0000000C	        syscall
+ 194 0168               
+ 195 0168               invalid_row_error:
+ 196 0168 34020004	        li      $v0, PRINT_STRING
+ 197 016c 3C040000	        la      $a0, invalid_row_size
+     0170 34840000
+ 198 0174 0000000C	        syscall
+ 199 0178 3402000A	        li      $v0, EXIT               # Exit
+ 200 017c 0000000C	        syscall
+ 201 0180               
+ 202 0180               binary_row_error_out:
+ 203 0180 34020004	        li      $v0, PRINT_STRING
+ 204 0184 3C040000	        la      $a0, illegal_input_val
+     0188 34840000
+ 205 018c 0000000C	        syscall
+ 206 0190 3402000A	        li      $v0, EXIT               # Exit
+ 207 0194 0000000C	        syscall
+
+
+EXIT                   = 0000000A   
+PRINT_INT              = 00000001   
+PRINT_STRING           = 00000004   
+READ_INT               = 00000005   
+binary_input             00000148 R  data 
+binary_row_error_out     00000180 R  text 
+binary_row_loop_begin    00000080 R  text 
+binary_row_loop_end      000000B0 R  text 
+binary_row_prep          00000070 R  text 
+convert_to_binny         ******** XG
+end_generations_loop     00000128 R  text 
+generate_row_prep        ******** XG
+get_row_a_address        ******** XG
+illegal_input_val        00000112 R  data 
+intro_text               00000000 R  data 
+invalid_gen_error        00000150 R  text 
+invalid_gen_num          000000AF R  data 
+invalid_row_error        00000168 R  text 
+invalid_row_size         000000E5 R  data 
+invalid_rule             0000007F R  data 
+invalid_rule_error       00000138 R  text 
+main                     00000000 RG text 
+new_line                 00000264 R  data 
+print_current_row        ******** XG
+print_num                ******** XG
+print_scale              ******** XG
+rule_intro_text          00000142 R  data 
+running_generations      00000108 R  text 

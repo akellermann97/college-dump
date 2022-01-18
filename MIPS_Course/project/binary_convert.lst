@@ -1,0 +1,181 @@
+   1 0000               ######################################################################################
+   2 0000               # File        : binary_convert.asm
+   3 0000               # Author      : Alexander Kellermann Nieves
+   4 0000               # Description : In this file, we take the decimal number from main, and store it
+   5 0000               # into an array called converted_num. This file also contains the method to
+   6 0000               # print the converted_num to screen, complete with parenthesis!
+   7 0000               #
+   8 0000               ######################################################################################
+   9 0000               
+  10 0000               PRINT_INT    = 1
+  11 0000               PRINT_STRING = 4
+  12 0000               READ_INT     = 5
+  13 0000               EXIT         = 10
+  14 0000               
+  15 0000                       .align 0
+  16 0000                       .data 
+  17 0000               
+  18 0000               
+  19 0000               converted_num:
+  20 0000 00000000	        .space 36
+          00000000
+          00000000
+          00000000
+          00000000
+          00000000
+  21 0024               
+  22 0024                       .align 0
+  23 0024               
+  24 0024               open_paren:
+  25 0024 202800  	        .asciiz " ("
+  26 0027               
+  27 0027               closed_paren:
+  28 0027 290A00  	        .asciiz ")\n"
+  29 002a               
+  30 002a 0000    	        .align 2
+  31 0000                       .text
+  32 0000               
+  33 0000                       .globl convert_to_binny
+  34 0000                       .globl print_num
+  35 0000                       .globl address_of_converted_num
+  36 0000               
+  37 0000               convert_to_binny:
+  38 0000 23BDFFF0		addi 	$sp, $sp, -16
+  39 0004 AFBF000C		sw 	$ra, 12($sp)
+  40 0008 AFB20008		sw 	$s2, 8($sp)
+  41 000c AFB10004		sw 	$s1, 4($sp)
+  42 0010 AFB00000		sw 	$s0, 0($sp)
+  43 0014               
+  44 0014                       # prep work for our subtraction method
+  45 0014 3C0E0000	        la      $t6, converted_num      # t1 contains address of our 'array'
+     0018 35CE0000
+  46 001c 340D0020	        li      $t5, 32
+  47 0020               
+  48 0020               
+  49 0020               convert_to_binary:
+  50 0020                       # The number to convert will be in $a0
+  51 0020                       # The result will be stored in $v0
+  52 0020               
+  53 0020               print_bin:
+  54 0020               
+  55 0020 00804021	        move    $t0, $a0
+  56 0024 34090000	        li      $t1, 0
+  57 0028 200B0001	        addi    $t3, $zero, 1           # load 1 as a mask
+  58 002c 000B5FC0	        sll     $t3, $t3, 31            # move the mask to appropriate position
+  59 0030 200C0020	        addi    $t4, $zero, 32          # loop counter
+  60 0034               
+  61 0034               loop:
+  62 0034 010B4824	        and     $t1, $t0, $t3           # and the input with the mask
+  63 0038 11200004	        beq     $t1, $zero, print       # Branch to print if its 0
+  64 003c                       
+  65 003c 00004821	        move    $t1, $zero              # Zero out $t1
+  66 0040 20090001	        addi    $t1, $zero, 1           # Put a 1 in $t1
+  67 0044 21ADFFFF	        addi    $t5, -1
+  68 0048 08000013	        j       print
+  69 004c                       
+  70 004c                       
+  71 004c               print:  
+  72 004c 21ADFFFF	        addi    $t5, $t5, -1
+  73 0050 29B00008	        slti    $s0, $t5, 8 
+  74 0054 10100002	        beq     $zero, $s0, shifting_stuff
+  75 0058 ADC90000	        sw      $t1, 0($t6)
+  76 005c 21CE0004	        addi    $t6, 4
+  77 0060               
+  78 0060               shifting_stuff:
+  79 0060                       
+  80 0060 000B5842	        srl     $t3, $t3, 1
+  81 0064 218CFFFF	        addi    $t4, $t4, -1
+  82 0068 1580FFF2	        bne     $t4, $zero, loop
+  83 006c               
+  84 006c               
+  85 006c               done_with_convert:
+  86 006c               
+  87 006c 8FBF000C		lw 	$ra, 12($sp)
+  88 0070 8FB20008		lw 	$s2, 8($sp)
+  89 0074 8FB10004		lw 	$s1, 4($sp)
+  90 0078 8FB00000		lw 	$s0, 0($sp)
+  91 007c 23BD0010		addi 	$sp, $sp, 16
+  92 0080               
+  93 0080 3C040000	        la      $a0, converted_num
+     0084 34840000
+  94 0088               
+  95 0088               
+  96 0088 03E00008	        jr $ra  # return to main
+  97 008c               
+  98 008c               
+  99 008c               print_num:
+ 100 008c 23BDFFF0		addi 	$sp, $sp, -16
+ 101 0090 AFBF000C		sw 	$ra, 12($sp)
+ 102 0094 AFB20008		sw 	$s2, 8($sp)
+ 103 0098 AFB10004		sw 	$s1, 4($sp)
+ 104 009c AFB00000		sw 	$s0, 0($sp)
+ 105 00a0               
+ 106 00a0               print_open_paren:
+ 107 00a0 3C100000	        la      $s0, open_paren
+     00a4 36100000
+ 108 00a8 34020004	        li      $v0, PRINT_STRING 
+ 109 00ac 02002021	        move    $a0, $s0
+ 110 00b0 0000000C	        syscall
+ 111 00b4               
+ 112 00b4               print_converted_binary_number_2_screen:
+ 113 00b4 3C100000	        la      $s0, converted_num
+     00b8 36100000
+ 114 00bc 34130007	        li      $s3, 7
+ 115 00c0                       
+ 116 00c0               print_bin_loop_2_scr:
+ 117 00c0 8E110000	        lw      $s1, 0($s0)
+ 118 00c4 02202021	        move    $a0, $s1
+ 119 00c8 34020001	        li      $v0, PRINT_INT
+ 120 00cc 0000000C	        syscall
+ 121 00d0 12600003	        beq     $s3, $zero, print_bin_loop_finished
+ 122 00d4 2273FFFF	        addi    $s3, $s3, -1
+ 123 00d8 22100004	        addi    $s0, $s0, 4
+ 124 00dc 08000030	        j       print_bin_loop_2_scr
+ 125 00e0               
+ 126 00e0               print_bin_loop_finished:
+ 127 00e0               
+ 128 00e0               print_closed_paren:
+ 129 00e0 3C100000	        la      $s0, closed_paren
+     00e4 36100000
+ 130 00e8 34020004	        li      $v0, PRINT_STRING 
+ 131 00ec 02002021	        move    $a0, $s0
+ 132 00f0 0000000C	        syscall
+ 133 00f4               
+ 134 00f4               done_with_print_num:
+ 135 00f4               
+ 136 00f4 8FBF000C		lw 	$ra, 12($sp)
+ 137 00f8 8FB20008		lw 	$s2, 8($sp)
+ 138 00fc 8FB10004		lw 	$s1, 4($sp)
+ 139 0100 8FB00000		lw 	$s0, 0($sp)
+ 140 0104 23BD0010		addi 	$sp, $sp, 16
+ 141 0108               
+ 142 0108 03E00008	        jr      $ra                  # return to main
+ 143 010c               
+ 144 010c               address_of_converted_num:
+ 145 010c 3C020000	        la      $v0, converted_num
+     0110 34420000
+ 146 0114 03E00008	        jr      $ra
+
+
+EXIT                                    = 0000000A   
+PRINT_INT                               = 00000001   
+PRINT_STRING                            = 00000004   
+READ_INT                                = 00000005   
+address_of_converted_num                  0000010C RG text 
+closed_paren                              00000027 R  data 
+convert_to_binary                         00000020 R  text 
+convert_to_binny                          00000000 RG text 
+converted_num                             00000000 R  data 
+done_with_convert                         0000006C R  text 
+done_with_print_num                       000000F4 R  text 
+loop                                      00000034 R  text 
+open_paren                                00000024 R  data 
+print                                     0000004C R  text 
+print_bin                                 00000020 R  text 
+print_bin_loop_2_scr                      000000C0 R  text 
+print_bin_loop_finished                   000000E0 R  text 
+print_closed_paren                        000000E0 R  text 
+print_converted_binary_number_2_screen    000000B4 R  text 
+print_num                                 0000008C RG text 
+print_open_paren                          000000A0 R  text 
+shifting_stuff                            00000060 R  text 

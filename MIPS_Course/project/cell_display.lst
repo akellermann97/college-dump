@@ -1,0 +1,589 @@
+   1 0000               ################################################################################
+   2 0000               #
+   3 0000               # File        : cell_display.asm
+   4 0000               # Author      : Alexander Kellermann Nieves
+   5 0000               # Description : Handle all display functions outside of the banner,
+   6 0000               # This includes the function to generate the next cell based on the current
+   7 0000               # cell, the function to print the scale, the function that decides whether an
+   8 0000               # 'A' or other letter is printed, and the one that handles the justification of
+   9 0000               # letters to the right if they're under 2 digits long.
+  10 0000               #
+  11 0000               ################################################################################
+  12 0000               
+  13 0000               PRINT_INT    = 1
+  14 0000               PRINT_STRING = 4
+  15 0000               READ_INT     = 5
+  16 0000               PRINT_CHAR   = 11
+  17 0000               EXIT         = 10
+  18 0000               
+  19 0000                       .align 0
+  20 0000                       .data
+  21 0000               minus:
+  22 0000 2D00    	        .asciiz "-"
+  23 0002               
+  24 0002               empty:
+  25 0002 2000    	        .asciiz " "
+  26 0004               
+  27 0004               plus:
+  28 0004 2B00    	        .asciiz "+"
+  29 0006               
+  30 0006               cero:
+  31 0006 3000    	        .asciiz "0"
+  32 0008               
+  33 0008               new_line_display:
+  34 0008 0A00    	        .asciiz "\n"
+  35 000a               
+  36 000a               dot:
+  37 000a 2E00    	        .asciiz "."
+  38 000c               
+  39 000c               alpha:
+  40 000c 2E414243	        .asciiz ".ABCDEFHIJKLMNOPQRSTUVWXYZ"
+          44454648
+          494A4B4C
+          4D4E4F50
+          51525354
+          55565758
+  41 0027               
+  42 0027 00      	        .align 2
+  43 0028               
+  44 0028               row_a:
+  45 0028 00000000	        .space 284
+          00000000
+          00000000
+          00000000
+          00000000
+          00000000
+  46 0144               
+  47 0144               row_b:
+  48 0144 00000000	        .space 284
+          00000000
+          00000000
+          00000000
+          00000000
+          00000000
+  49 0260               
+  50 0260                       .align 2
+  51 0260               current_row_number:
+  52 0260 00      	        .byte  0
+  53 0261               
+  54 0261               cell_0:
+  55 0261 000000  	        .word  1
+     0264 00000001
+  56 0268 00000001	        .word  1
+  57 026c 00000001	        .word  1
+  58 0270               
+  59 0270               cell_1:
+  60 0270 00000001	        .word  1
+  61 0274 00000001	        .word  1
+  62 0278 00000000	        .word  0
+  63 027c               
+  64 027c               cell_2:
+  65 027c 00000001	        .word  1
+  66 0280 00000000	        .word  0
+  67 0284 00000001	        .word  1
+  68 0288               cell_3:
+  69 0288 00000001	        .word  1
+  70 028c 00000000	        .word  0
+  71 0290 00000000	        .word  0
+  72 0294               
+  73 0294               cell_4:
+  74 0294 00000000	        .word  0
+  75 0298 00000001	        .word  1
+  76 029c 00000001	        .word  1
+  77 02a0               
+  78 02a0               cell_5:
+  79 02a0 00000000	        .word  0
+  80 02a4 00000001	        .word  1
+  81 02a8 00000000	        .word  0
+  82 02ac               
+  83 02ac               cell_6:
+  84 02ac 00000000	        .word  0
+  85 02b0 00000000	        .word  0
+  86 02b4 00000001	        .word  1
+  87 02b8               
+  88 02b8               cell_7:
+  89 02b8 00000000	        .word  0
+  90 02bc 00000000	        .word  0
+  91 02c0 00000000	        .word  0
+  92 02c4               
+  93 02c4               temp_cell:
+  94 02c4 00000000	        .word  0 # empty, because we populate it ourselves
+  95 02c8 00000000	        .word  0
+  96 02cc 00000000	        .word  0
+  97 02d0               
+  98 02d0               print_text1:
+  99 02d0 4F6C6420	        .asciiz "Old cell: "
+          63656C6C
+          3A2000  
+ 100 02db               
+ 101 02db               print_text2:
+ 102 02db 4E657720	        .asciiz "New Cell: "
+          43656C6C
+          3A2000  
+ 103 02e6               
+ 104 02e6               what_happens_to_cell:
+ 105 02e6 54686520	        .asciiz "The cell dies: "
+          63656C6C
+          20646965
+          733A2000
+ 106 02f6               
+ 107 02f6 0000    	        .align 2
+ 108 0000                       .text 
+ 109 0000               
+ 110 0000               
+ 111 0000                       # functions called by cell_auto_sim.asm
+ 112 0000               .align 2
+ 113 0000               .text
+ 114 0000                       .globl  print_scale
+ 115 0000                       .globl  print_current_row
+ 116 0000                       .globl  generate_row_prep
+ 117 0000                       .globl  get_row_a_address
+ 118 0000                       .globl  address_of_converted_num
+ 119 0000               
+ 120 0000               get_row_a_address:
+ 121 0000 3C020000	        la      $v0, row_a
+     0004 34420000
+ 122 0008 03E00008	        jr      $ra             # Return to calling function
+ 123 000c               
+ 124 000c               
+ 125 000c               print_scale:
+ 126 000c                       # a0 will contain the amount of columns we need to print
+ 127 000c 34020004	        li      $v0, PRINT_STRING
+ 128 0010 00804821	        move    $t1, $a0
+ 129 0014 21290001	        addi    $t1, $t1, 1
+ 130 0018 340D0005	        li      $t5, 5          # t4 is counter 
+ 131 001c 340C0001	        li      $t4, 1          # t5 is counter 
+ 132 0020               
+ 133 0020               print_my_buffer_space:
+ 134 0020 3C040000	        la      $a0, empty
+     0024 34840000
+ 135 0028 0000000C	        syscall
+ 136 002c 0000000C	        syscall                 # print 3 blanks
+ 137 0030 0000000C	        syscall
+ 138 0034               
+ 139 0034               scale_loop:
+ 140 0034 2129FFFF	        addi    $t1, $t1, -1    # counter for things to print
+ 141 0038 21ADFFFF	        addi    $t5, $t5, -1    # counter for fives column
+ 142 003c 11200013	        beq     $t1, $zero, exit_scale_loop
+ 143 0040 11A00004	        beq     $t5, $zero, is_fifth_column
+ 144 0044 3C040000	        la      $a0, minus
+     0048 34840000
+ 145 004c 0000000C	        syscall
+ 146 0050               scale_loop_jump:
+ 147 0050 0800000D	        j       scale_loop
+ 148 0054               
+ 149 0054               is_fifth_column:
+ 150 0054 11800006	        beq     $t4, $zero, is_tenth_column
+ 151 0058 218CFFFF	        addi    $t4, $t4, -1    # add 1 to t4
+ 152 005c 3C040000	        la      $a0, plus       # print the plus
+     0060 34840000
+ 153 0064 0000000C	        syscall
+ 154 0068 340D0005	        li      $t5, 5
+ 155 006c 08000014	        j       scale_loop_jump
+ 156 0070               
+ 157 0070               is_tenth_column:
+ 158 0070 00006021	        move    $t4, $zero      # set t4 to zero
+ 159 0074 340D0005	        li      $t5, 5
+ 160 0078 3C040000	        la      $a0, cero
+     007c 34840000
+ 161 0080 0000000C	        syscall
+ 162 0084 218C0001	        addi    $t4, $t4, 1
+ 163 0088 08000014	        j       scale_loop_jump
+ 164 008c               
+ 165 008c               exit_scale_loop:
+ 166 008c 3C040000	        la      $a0, new_line_display
+     0090 34840000
+ 167 0094 0000000C	        syscall
+ 168 0098 03E00008	        jr      $ra
+ 169 009c               
+ 170 009c               
+ 171 009c               right_justify:
+ 172 009c 34020004	        li      $v0, PRINT_STRING
+ 173 00a0 3C040000	        la      $a0, empty
+     00a4 34840000
+ 174 00a8 0000000C	        syscall
+ 175 00ac 08000031	        j       continue_printing_number
+ 176 00b0               
+ 177 00b0               print_current_row:
+ 178 00b0 3C0C0000	        la      $t4, current_row_number
+     00b4 358C0000
+ 179 00b8 818D0000	        lb      $t5, 0($t4)
+ 180 00bc               
+ 181 00bc                       # Check to see if number is less than 10, if it is, we print a space
+ 182 00bc 29AE000A	        slti    $t6, $t5, 10
+ 183 00c0 15C0FFF6	        bne     $t6, $zero, right_justify
+ 184 00c4               
+ 185 00c4               continue_printing_number:
+ 186 00c4               
+ 187 00c4 01A02021	        move    $a0, $t5
+ 188 00c8 34020001	        li      $v0, PRINT_INT
+ 189 00cc 0000000C	        syscall
+ 190 00d0                       
+ 191 00d0 21AD0001	        addi    $t5, $t5, 1
+ 192 00d4 A18D0000	        sb      $t5, 0($t4)
+ 193 00d8 34020004	        li      $v0, PRINT_STRING
+ 194 00dc 3C040000	        la      $a0, empty
+     00e0 34840000
+ 195 00e4 0000000C	        syscall
+ 196 00e8               
+ 197 00e8 03E00008	        jr      $ra
+ 198 00ec               
+ 199 00ec               generate_row_prep:
+ 200 00ec 23BDFFE4	        addi    $sp, $sp, -28
+ 201 00f0 AFBF0000	        sw      $ra, 0($sp)
+ 202 00f4 AFB00004	        sw      $s0, 4($sp)
+ 203 00f8 AFB10008	        sw      $s1, 8($sp)                     # row size stored in $a0
+ 204 00fc AFB2000C	        sw      $s2, 12($sp)                    # Store S registers on the stack
+ 205 0100 AFB30010	        sw      $s3, 16($sp)                    # Rule number in binary is in
+ 206 0104 AFB40014	        sw      $s4, 20($sp)                    # converted_num
+ 207 0108 AFB50018	        sw      $s5, 24($sp)                    # The original row of binary is in row_a 
+ 208 010c               
+ 209 010c 00808021	        move    $s0, $a0                        # store row size
+ 210 0110 0080A021	        move    $s4, $a0                        # use this as a counter variable
+ 211 0114 34110002	        li      $s1, 2                          # Determine if odd or even
+ 212 0118 3C080000	        la      $t0, current_row_number
+     011c 35080000
+ 213 0120 81080000	        lb      $t0, 0($t0)
+ 214 0124 00A04021	        move    $t0, $a1                        # move 
+ 215 0128 0111001A	        div     $t0, $s1                        # t0/s1
+ 216 012c 00004010	        mfhi    $t0                             # t0
+ 217 0130 11E00001	        beq     $t7, $zero, row_a_is_cur        # if 0 = 0 make row a = 0
+ 218 0134 08000054	        j       row_b_is_cur
+ 219 0138                       
+ 220 0138               
+ 221 0138               row_a_is_cur:
+ 222 0138 3C110000	        la      $s1, row_a                      # store row address (A)
+     013c 36310000
+ 223 0140 3C120000	        la      $s2, row_b                      # store row address (B)
+     0144 36520000
+ 224 0148 340F0001	        li      $t7, 1
+ 225 014c 08000059	        j       generate_row_begin
+ 226 0150               
+ 227 0150               row_b_is_cur:
+ 228 0150 3C110000	        la      $s1, row_b                      # store row address (B)
+     0154 36310000
+ 229 0158 3C120000	        la      $s2, row_a                      # store row address (A)
+     015c 36520000
+ 230 0160 340F0000	        li      $t7, 0
+ 231 0164               
+ 232 0164               generate_row_begin:
+ 233 0164                       # S1 = current row
+ 234 0164                       # S2 = Row we're writing to.
+ 235 0164                       # S4 = our counter
+ 236 0164                       # S0 = our permanent row size (we use this as reference)
+ 237 0164               
+ 238 0164                       # stop loop condition
+ 239 0164 12800016	        beq     $s4, $zero, generate_row_end    # stop loop when row = 0
+ 240 0168                       # stop loop condition
+ 241 0168               
+ 242 0168                       
+ 243 0168                       ### Printing characters to screen
+ 244 0168 8E330000	        lw      $s3, 0($s1)                     # load a word from row cur
+ 245 016c 3C040000	        la      $a0, alpha                      # store address of alpha string
+     0170 34840000
+ 246 0174 00932020	        add     $a0, $a0, $s3                   # add offset of alpha by t0
+ 247 0178 80840000	        lb      $a0, 0($a0)                     # load the correct letter
+ 248 017c 3402000B	        li      $v0, PRINT_CHAR                 # print the character
+ 249 0180 0000000C	        syscall
+ 250 0184                       ### Printing characters to screen
+ 251 0184               
+ 252 0184                       # li      $v0, PRINT_STRING             # print the character
+ 253 0184                       # la      $a0, print_text1
+ 254 0184                       # syscall
+ 255 0184               
+ 256 0184                       # call fill cell
+ 257 0184 0800007D	        j       fill_cell
+ 258 0188                       # Now calulate what we do with that cell
+ 259 0188               cell_been_filled:
+ 260 0188               
+ 261 0188 080000A1	        j       cell_survive_or_die
+ 262 018c               did_cell_die:
+ 263 018c               
+ 264 018c                                                               # The number of the cell is now stored in $v1
+ 265 018c 0C000000	        jal     address_of_converted_num        # The address of converted num is now in $v0
+ 266 0190 34090004	        li      $t1, 4          # t1 = 4
+ 267 0194 00690018	        mul     $v1, $v1, $t1   # v1 * 4 = v1
+     0198 00001812
+ 268 019c 00431020	        add     $v0, $v0, $v1   # v0 = v0 + v1
+ 269 01a0 8C430000	        lw      $v1, 0($v0)     # load what is at v0
+ 270 01a4               
+ 271 01a4                       # Stores the word in the proper place for the next generation
+ 272 01a4                       # s3 already contains the current number
+ 273 01a4 10600001	        beq     $v1, $zero, current_num_zero
+ 274 01a8 00731820	        add     $v1, $v1, $s3
+ 275 01ac               
+ 276 01ac               current_num_zero:
+ 277 01ac AE430000	        sw      $v1, 0($s2)                     # v1 now contains whether or not the 
+ 278 01b0                                                               # cell will die or not in the
+ 279 01b0                                                               # next generation
+ 280 01b0               
+ 281 01b0                                                               # incrementing characters and jumping
+ 282 01b0 22310004	        addi    $s1, $s1, 4                     # move to next character (word)
+ 283 01b4 22520004	        addi    $s2, $s2, 4
+ 284 01b8 2294FFFF	        addi    $s4, $s4, -1                    # decrement counter
+ 285 01bc 08000059	        j       generate_row_begin              # continue loop
+ 286 01c0                                                               # incrementing characters and jumping
+ 287 01c0               generate_row_end:
+ 288 01c0 34020004	        li      $v0, PRINT_STRING               # prepare string 
+ 289 01c4 3C040000	        la      $a0, new_line_display           # print '\n'
+     01c8 34840000
+ 290 01cc 0000000C	        syscall
+ 291 01d0               
+ 292 01d0 8FBF0000	        lw      $ra, 0($sp)
+ 293 01d4 8FB00004	        lw      $s0, 4($sp)
+ 294 01d8 8FB10008	        lw      $s1, 8($sp)
+ 295 01dc 8FB2000C	        lw      $s2, 12($sp)
+ 296 01e0 8FB30010	        lw      $s3, 16($sp)
+ 297 01e4 8FB40014	        lw      $s4, 20($sp)
+ 298 01e8 8FB50018	        lw      $s5, 24($sp)
+ 299 01ec 23BD001C	        addi    $sp, $sp, 28
+ 300 01f0 03E00008	        jr      $ra
+ 301 01f4               
+ 302 01f4               ################################################################################
+ 303 01f4               #    This function takes the current cell index (s4) and fills the temp_cell   #
+ 304 01f4               #       address with the appropriate left, middle, and right values.           #
+ 305 01f4               ################################################################################
+ 306 01f4               fill_cell:
+ 307 01f4 3C080000	        la      $t0, temp_cell
+     01f8 35080000
+ 308 01fc 20030001	        addi    $v1, $zero, 1
+ 309 0200 12900008	        beq     $s4, $s0, fill_cell_first
+ 310 0204 12830011	        beq     $s4, $v1, fill_cell_last        # v1 = 1
+ 311 0208 8E2EFFFC	        lw      $t6, -4($s1)                    # left
+ 312 020c AD0E0000	        sw      $t6, 0($t0)
+ 313 0210 8E2E0000	        lw      $t6, 0($s1)                     # middle
+ 314 0214 AD0E0004	        sw      $t6, 4($t0)
+ 315 0218 8E2E0004	        lw      $t6, 4($s1)                     # right
+ 316 021c AD0E0008	        sw      $t6, 8($t0)                     # right of temp_cell
+ 317 0220               
+ 318 0220 08000062	        j       cell_been_filled
+ 319 0224               
+ 320 0224               
+ 321 0224               fill_cell_first:
+ 322 0224               # Special case, where the cell is all the way left.
+ 323 0224 8E2E0000	        lw      $t6, 0($s1)     # loading middle
+ 324 0228 AD0E0004	        sw      $t6, 4($t0)     # storing middle
+ 325 022c 8E2E0004	        lw      $t6, 4($s1)     # loading right
+ 326 0230 AD0E0008	        sw      $t6, 8($t0)     # storing right
+ 327 0234               
+ 328 0234               
+ 329 0234 340A0000	        li      $t2, 0          # t2 = 1
+ 330 0238 022A8820	        add     $s1, $s1, $t2
+ 331 023c               
+ 332 023c 8E2E0000	        lw      $t6, 0($s1)     # loading left
+ 333 0240 AD0E0000	        sw      $t6, 0($t0)     # storing left
+ 334 0244 022A8822	        sub     $s1, $s1, $t2   # move array s1 spaces back
+ 335 0248                       
+ 336 0248 08000062	        j       cell_been_filled
+ 337 024c               
+ 338 024c               fill_cell_last:
+ 339 024c               # Special case, where the cell is all the way right
+ 340 024c 8E2E0000	        lw      $t6, 0($s1)     # loading middle
+ 341 0250 AD0E0004	        sw      $t6, 4($t0)     # storing middle
+ 342 0254 8E2EFFFC	        lw      $t6, -4($s1)    # loading left
+ 343 0258 AD0E0000	        sw      $t6, 0($t0)     # storing left
+ 344 025c               
+ 345 025c               
+ 346 025c 340A0004	        li      $t2, 4          # t2 = 1
+ 347 0260 2210FFFF	        addi    $s0, $s0, -1    # s0 now contains the amount we need to mul by
+ 348 0264               
+ 349 0264 01500018	        mul     $t2, $t2, $s0
+     0268 00005012
+ 350 026c               
+ 351 026c 022A8822	        sub     $s1, $s1, $t2   # move array t2 spaces ahead
+ 352 0270 8E2E0000	        lw      $t6, 0($s1)     # loading left
+ 353 0274 AD0E0008	        sw      $t6, 8($t0)     # storing left
+ 354 0278 022A8820	        add     $s1, $s1, $t2   # move array t2 spaces back
+ 355 027c               
+ 356 027c 22100001	        addi    $s0, $s0, 1     # restore s0
+ 357 0280                       
+ 358 0280 08000062	        j       cell_been_filled
+ 359 0284               
+ 360 0284               ###############################################################################
+ 361 0284               ### Calulate whether or not the cell dies or not, store the result in $v1 #####
+ 362 0284               ###############################################################################
+ 363 0284               
+ 364 0284               cell_survive_or_die:
+ 365 0284 3C090000	        la      $t1, temp_cell
+     0288 35290000
+ 366 028c 8D2A0000	        lw      $t2, 0($t1)
+ 367 0290 8D2B0004	        lw      $t3, 4($t1)
+ 368 0294 8D2C0008	        lw      $t4, 8($t1)
+ 369 0298 34150001	        li      $s5, 1
+ 370 029c 000A502A	        slt     $t2, $zero, $t2         # If t# > 1 then t# = 1
+ 371 02a0 000B582A	        slt     $t3, $zero, $t3
+ 372 02a4 000C602A	        slt     $t4, $zero, $t4
+ 373 02a8 AD2A0000	        sw      $t2, 0($t1)
+ 374 02ac AD2B0004	        sw      $t3, 4($t1)
+ 375 02b0 AD2C0008	        sw      $t4, 8($t1)
+ 376 02b4               
+ 377 02b4               check_cell0:
+ 378 02b4 3C0A0000	        la      $t2, cell_0
+     02b8 354A0000
+ 379 02bc 8D2B0000	        lw      $t3, 0($t1)
+ 380 02c0 8D4C0000	        lw      $t4, 0($t2)
+ 381 02c4 156C0008	        bne     $t3, $t4, check_cell1 
+ 382 02c8 8D2B0004	        lw      $t3, 4($t1)
+ 383 02cc 8D4C0004	        lw      $t4, 4($t2)
+ 384 02d0 156C0005	        bne     $t3, $t4, check_cell1 
+ 385 02d4 8D2B0008	        lw      $t3, 8($t1)
+ 386 02d8 8D4C0008	        lw      $t4, 8($t2)
+ 387 02dc 156C0002	        bne     $t3, $t4, check_cell1 
+ 388 02e0 34030000	        li      $v1, 0
+ 389 02e4 08000063	        j       did_cell_die
+ 390 02e8               
+ 391 02e8               check_cell1:
+ 392 02e8 3C0A0000	        la      $t2, cell_1
+     02ec 354A0000
+ 393 02f0 8D2B0000	        lw      $t3, 0($t1)
+ 394 02f4 8D4C0000	        lw      $t4, 0($t2)
+ 395 02f8 156C0008	        bne     $t3, $t4, check_cell2 
+ 396 02fc 8D2B0004	        lw      $t3, 4($t1)
+ 397 0300 8D4C0004	        lw      $t4, 4($t2)
+ 398 0304 156C0005	        bne     $t3, $t4, check_cell2 
+ 399 0308 8D2B0008	        lw      $t3, 8($t1)
+ 400 030c 8D4C0008	        lw      $t4, 8($t2)
+ 401 0310 156C0002	        bne     $t3, $t4, check_cell2 
+ 402 0314 34030001	        li      $v1, 1
+ 403 0318 08000063	        j       did_cell_die
+ 404 031c               
+ 405 031c               check_cell2:
+ 406 031c 3C0A0000	        la      $t2, cell_2
+     0320 354A0000
+ 407 0324 8D2B0000	        lw      $t3, 0($t1)
+ 408 0328 8D4C0000	        lw      $t4, 0($t2)
+ 409 032c 156C0008	        bne     $t3, $t4, check_cell3 
+ 410 0330 8D2B0004	        lw      $t3, 4($t1)
+ 411 0334 8D4C0004	        lw      $t4, 4($t2)
+ 412 0338 156C0005	        bne     $t3, $t4, check_cell3 
+ 413 033c 8D2B0008	        lw      $t3, 8($t1)
+ 414 0340 8D4C0008	        lw      $t4, 8($t2)
+ 415 0344 156C0002	        bne     $t3, $t4, check_cell3 
+ 416 0348 34030002	        li      $v1, 2
+ 417 034c 08000063	        j       did_cell_die
+ 418 0350               
+ 419 0350               check_cell3:
+ 420 0350 3C0A0000	        la      $t2, cell_3
+     0354 354A0000
+ 421 0358 8D2B0000	        lw      $t3, 0($t1)
+ 422 035c 8D4C0000	        lw      $t4, 0($t2)
+ 423 0360 156C0008	        bne     $t3, $t4, check_cell4 
+ 424 0364 8D2B0004	        lw      $t3, 4($t1)
+ 425 0368 8D4C0004	        lw      $t4, 4($t2)
+ 426 036c 156C0005	        bne     $t3, $t4, check_cell4 
+ 427 0370 8D2B0008	        lw      $t3, 8($t1)
+ 428 0374 8D4C0008	        lw      $t4, 8($t2)
+ 429 0378 156C0002	        bne     $t3, $t4, check_cell4 
+ 430 037c 34030003	        li      $v1, 3
+ 431 0380 08000063	        j       did_cell_die
+ 432 0384               
+ 433 0384               check_cell4:
+ 434 0384 3C0A0000	        la      $t2, cell_4
+     0388 354A0000
+ 435 038c 8D2B0000	        lw      $t3, 0($t1)
+ 436 0390 8D4C0000	        lw      $t4, 0($t2)
+ 437 0394 156C0008	        bne     $t3, $t4, check_cell5 
+ 438 0398 8D2B0004	        lw      $t3, 4($t1)
+ 439 039c 8D4C0004	        lw      $t4, 4($t2)
+ 440 03a0 156C0005	        bne     $t3, $t4, check_cell5 
+ 441 03a4 8D2B0008	        lw      $t3, 8($t1)
+ 442 03a8 8D4C0008	        lw      $t4, 8($t2)
+ 443 03ac 156C0002	        bne     $t3, $t4, check_cell5 
+ 444 03b0 34030004	        li      $v1, 4
+ 445 03b4 08000063	        j       did_cell_die
+ 446 03b8               
+ 447 03b8               check_cell5:
+ 448 03b8 3C0A0000	        la      $t2, cell_5
+     03bc 354A0000
+ 449 03c0 8D2B0000	        lw      $t3, 0($t1)
+ 450 03c4 8D4C0000	        lw      $t4, 0($t2)
+ 451 03c8 156C0008	        bne     $t3, $t4, check_cell6 
+ 452 03cc 8D2B0004	        lw      $t3, 4($t1)
+ 453 03d0 8D4C0004	        lw      $t4, 4($t2)
+ 454 03d4 156C0005	        bne     $t3, $t4, check_cell6 
+ 455 03d8 8D2B0008	        lw      $t3, 8($t1)
+ 456 03dc 8D4C0008	        lw      $t4, 8($t2)
+ 457 03e0 156C0002	        bne     $t3, $t4, check_cell6 
+ 458 03e4 34030005	        li      $v1, 5
+ 459 03e8 08000063	        j       did_cell_die
+ 460 03ec               
+ 461 03ec               check_cell6:
+ 462 03ec 3C0A0000	        la      $t2, cell_6
+     03f0 354A0000
+ 463 03f4 8D2B0000	        lw      $t3, 0($t1)
+ 464 03f8 8D4C0000	        lw      $t4, 0($t2)
+ 465 03fc 156C0008	        bne     $t3, $t4, check_cell7
+ 466 0400 8D2B0004	        lw      $t3, 4($t1)
+ 467 0404 8D4C0004	        lw      $t4, 4($t2)
+ 468 0408 156C0005	        bne     $t3, $t4, check_cell7
+ 469 040c 8D2B0008	        lw      $t3, 8($t1)
+ 470 0410 8D4C0008	        lw      $t4, 8($t2)
+ 471 0414 156C0002	        bne     $t3, $t4, check_cell7
+ 472 0418 34030006	        li      $v1, 6
+ 473 041c 08000063	        j       did_cell_die
+ 474 0420               
+ 475 0420               check_cell7:
+ 476 0420 34030007	        li      $v1, 7
+ 477 0424 08000063	        j       did_cell_die
+ 478 0428                       ### If we get to here, it must be cell 7 type
+
+
+EXIT                      = 0000000A   
+PRINT_CHAR                = 0000000B   
+PRINT_INT                 = 00000001   
+PRINT_STRING              = 00000004   
+READ_INT                  = 00000005   
+address_of_converted_num    ******** XG
+alpha                       0000000C R  data 
+cell_0                      00000264 R  data 
+cell_1                      00000270 R  data 
+cell_2                      0000027C R  data 
+cell_3                      00000288 R  data 
+cell_4                      00000294 R  data 
+cell_5                      000002A0 R  data 
+cell_6                      000002AC R  data 
+cell_7                      000002B8 R  data 
+cell_been_filled            00000188 R  text 
+cell_survive_or_die         00000284 R  text 
+cero                        00000006 R  data 
+check_cell0                 000002B4 R  text 
+check_cell1                 000002E8 R  text 
+check_cell2                 0000031C R  text 
+check_cell3                 00000350 R  text 
+check_cell4                 00000384 R  text 
+check_cell5                 000003B8 R  text 
+check_cell6                 000003EC R  text 
+check_cell7                 00000420 R  text 
+continue_printing_number    000000C4 R  text 
+current_num_zero            000001AC R  text 
+current_row_number          00000260 R  data 
+did_cell_die                0000018C R  text 
+dot                         0000000A R  data 
+empty                       00000002 R  data 
+exit_scale_loop             0000008C R  text 
+fill_cell                   000001F4 R  text 
+fill_cell_first             00000224 R  text 
+fill_cell_last              0000024C R  text 
+generate_row_begin          00000164 R  text 
+generate_row_end            000001C0 R  text 
+generate_row_prep           000000EC RG text 
+get_row_a_address           00000000 RG text 
+is_fifth_column             00000054 R  text 
+is_tenth_column             00000070 R  text 
+minus                       00000000 R  data 
+new_line_display            00000008 R  data 
+plus                        00000004 R  data 
+print_current_row           000000B0 RG text 
+print_my_buffer_space       00000020 R  text 
+print_scale                 0000000C RG text 
+print_text1                 000002D0 R  data 
+print_text2                 000002DB R  data 
+right_justify               0000009C R  text 
+row_a                       00000028 R  data 
+row_a_is_cur                00000138 R  text 
+row_b                       00000144 R  data 
+row_b_is_cur                00000150 R  text 
+scale_loop                  00000034 R  text 
+scale_loop_jump             00000050 R  text 
+temp_cell                   000002C4 R  data 
+what_happens_to_cell        000002E6 R  data 

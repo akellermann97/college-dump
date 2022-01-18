@@ -1,0 +1,15 @@
+Place for me to put notes while coding.
+
+We need to implement two routines:
+        find_gcd
+                -- Computes the greatest common denominator between two numbers
+                -- a0 is the original numberator
+                -- a1 is the original denominator
+                
+                -- RETURNS:
+                        -- V0 : The simplified numertor
+                        -- V1 : The simplified denominator
+                        -- t9 : the simplified integer part
+        simplify
+                -- Takes a complex fraction and produces a fraction in its
+                   simplest form

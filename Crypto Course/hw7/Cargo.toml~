@@ -1,0 +1,6 @@
+[package]
+name = "hw7"
+version = "0.1.0"
+authors = ["Dormio <alex.kellermann@live.com>"]
+
+[dependencies]

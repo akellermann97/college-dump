@@ -1,0 +1,161 @@
+   1 0000               # File:		build.asm
+   2 0000               # Author:	K. Reek
+   3 0000               # Contributors:	P. White,
+   4 0000               #		W. Carithers,
+   5 0000               #		Alexander Kellermann Nieves
+   6 0000               #
+   7 0000               # Description:	Binary tree building functions.
+   8 0000               #
+   9 0000               # Revisions:	$Log$
+  10 0000               
+  11 0000               
+  12 0000               	.text			# this is program code
+  13 0000               	.align 2		# instructions must be on word boundaries
+  14 0000               
+  15 0000               # 
+  16 0000               # Name:		add_elements
+  17 0000               #
+  18 0000               # Description:	loops through array of numbers, adding each (in order)
+  19 0000               #		to the tree
+  20 0000               #
+  21 0000               # Arguments:	a0 the address of the array
+  22 0000               #   		a1 the number of elements in the array
+  23 0000               #		a2 the address of the root pointer
+  24 0000               # Returns:	none
+  25 0000               #
+  26 0000               
+  27 0000               	.globl	add_elements
+  28 0000               	
+  29 0000               add_elements:
+  30 0000 23BDFFF0		addi 	$sp, $sp, -16
+  31 0004 AFBF000C		sw 	$ra, 12($sp)
+  32 0008 AFB20008		sw 	$s2, 8($sp)
+  33 000c AFB10004		sw 	$s1, 4($sp)
+  34 0010 AFB00000		sw 	$s0, 0($sp)
+  35 0014               
+  36 0014               #***** BEGIN STUDENT CODE BLOCK 1 ***************************
+  37 0014               #
+  38 0014               # Insert your code to iterate through the array, calling build_tree
+  39 0014               # for each value in the array.  Remember that build_tree requires
+  40 0014               # two parameters:  the address of the variable which contains the
+  41 0014               # root pointer for the tree, and the number to be inserted.
+  42 0014               #
+  43 0014               # Feel free to save extra "S" registers onto the stack if you need
+  44 0014               # more for your function.
+  45 0014               #
+  46 0014               #	address of an array of values	$a0, input_array
+  47 0014               #	number of integers in the array	$a1, 
+  48 0014               #	pointer to the root of the tree	$a2, ptr_root
+  49 0014               # 
+  50 0014               iter_prep:
+  51 0014 00808021	        move    $s0, $a0   # save the register from future function calls
+  52 0018 00A08821	        move    $s1, $a1   # save the register from future function calls
+  53 001c 00C09021	        move    $s2, $a2   # save the register from future function calls
+  54 0020                       
+  55 0020               
+  56 0020               iter_through:
+  57 0020 12200006	        beq     $s1, $zero, iter_finished       # if s1 = 0, no more numbers
+  58 0024 8E050000	        lw      $a1, 0($s0)                     # get the value at current
+  59 0028                                                               # place in array
+  60 0028 22100004	        addi    $s0, $s0, 4                     # move array 1 word forward
+  61 002c 2231FFFF	        addi    $s1, $s1, -1                    # subtract 1 from count
+  62 0030 00809021	        move    $s2, $a0                        # move ptr_root into a0
+  63 0034 0C000015	        jal     build_tree
+  64 0038 08000008	        j       iter_through
+  65 003c                               
+  66 003c                       
+  67 003c               
+  68 003c               iter_finished:
+  69 003c                       #done
+  70 003c               
+  71 003c               
+  72 003c               #
+  73 003c               # If you saved extra "S" reg to stack, make sure you restore them
+  74 003c               #
+  75 003c               #***** END STUDENT CODE BLOCK 1 *****************************
+  76 003c               
+  77 003c               add_done:
+  78 003c               
+  79 003c 8FBF000C		lw 	$ra, 12($sp)
+  80 0040 8FB20008		lw 	$s2, 8($sp)
+  81 0044 8FB10004		lw 	$s1, 4($sp)
+  82 0048 8FB00000		lw 	$s0, 0($sp)
+  83 004c 23BD0010		addi 	$sp, $sp, 16
+  84 0050 03E00008		jr 	$ra
+  85 0054               
+  86 0054               #***** BEGIN STUDENT CODE BLOCK 2 ***************************
+  87 0054               #
+  88 0054               # Put your build_tree subroutine here.
+  89 0054               #
+  90 0054                       .globl  build_tree
+  91 0054                       .globl  allocate_mem
+  92 0054               
+  93 0054               # a0 is the ptr_root
+  94 0054               # a1 is the number to be inserted
+  95 0054               
+  96 0054               build_tree:
+  97 0054 23BDFFE8	        addi    $sp, $sp, -24
+  98 0058 AFBF0000	        sw      $ra, 0($sp)
+  99 005c AFB00004	        sw      $s0, 4($sp)
+ 100 0060 AFB10008	        sw      $s1, 8($sp)
+ 101 0064 AFB2000C	        sw      $s2, 12($sp)
+ 102 0068 AFB30010	        sw      $s3, 16($sp)
+ 103 006c AFB40014	        sw      $s4, 20($sp)
+ 104 0070               
+ 105 0070               build_tree_prep:
+ 106 0070 00808021	        move    $s0, $a0        # save these from allocate_mem
+ 107 0074 00A08821	        move    $s1, $a1
+ 108 0078               
+ 109 0078               # check to see if tree exists
+ 110 0078               does_tree_exist:
+ 111 0078 8E120000	        lw      $s2, 0($s0)                     # load root
+ 112 007c 12400001	        beq     $s2, $zero, create_tree         # root dne
+ 113 0080 08000028	        j       search_for_member               # root exists
+ 114 0084                       
+ 115 0084               create_tree:
+ 116 0084 34040003	        li      $a0, 3          # get 3 words for the node
+ 117 0088 0C000000	        jal     allocate_mem
+ 118 008c                       # v0 now contains what will become the root node
+ 119 008c AC450000	        sw      $a1, 0($v0)     # put number at 0 offest
+ 120 0090 AC400004	        sw      $zero, 4($v0)   # put 0 as left node
+ 121 0094 AC400000	        sw      $zero, ($v0)   # put 0 as right node
+ 122 0098 AE020000	        sw      $v0, 0($s0)     # move the v0 address into s0
+ 123 009c 08000028	        j       build_done      # we don't need to run any other functions
+ 124 00a0                       
+ 125 00a0               
+ 126 00a0               # once tree exists, check if value exists in the tree already. Do this by
+ 127 00a0               # knowing that all values less than root are on left, and all values greater
+ 128 00a0               # than root are on the right
+ 129 00a0               search_for_member:
+ 130 00a0                       # tree must exist in order for this to be run
+ 131 00a0                       
+ 132 00a0               
+ 133 00a0               # call allocate_mem, grab the address from v0
+ 134 00a0               allocate_and_add:
+ 135 00a0               
+ 136 00a0               build_done:
+ 137 00a0 8FBF0000	        lw      $ra, 0($sp)
+ 138 00a4 8FB00004	        lw      $s0, 4($sp)
+ 139 00a8 8FB10008	        lw      $s1, 8($sp)
+ 140 00ac 8FB2000C	        lw      $s2, 12($sp)
+ 141 00b0 8FB30010	        lw      $s3, 16($sp)
+ 142 00b4 8FB40014	        lw      $s4, 20($sp)
+ 143 00b8 23BD0018	        addi    $sp, $sp, 24
+ 144 00bc 03E00008	        jr      $ra
+ 145 00c0               
+ 146 00c0               #***** END STUDENT CODE BLOCK 2 *****************************
+
+
+add_done             0000003C R  text 
+add_elements         00000000 RG text 
+allocate_and_add     000000A0 R  text 
+allocate_mem         ******** XG
+build_done           000000A0 R  text 
+build_tree           00000054 RG text 
+build_tree_prep      00000070 R  text 
+create_tree          00000084 R  text 
+does_tree_exist      00000078 R  text 
+iter_finished        0000003C R  text 
+iter_prep            00000014 R  text 
+iter_through         00000020 R  text 
+search_for_member    000000A0 R  text 

@@ -1,0 +1,149 @@
+   1 0000               # File:		traverse_tree.asm
+   2 0000               # Author:	K. Reek
+   3 0000               # Contributors:	P. White,
+   4 0000               #		W. Carithers,
+   5 0000               #		Alexander Kellermann Nieves
+   6 0000               #
+   7 0000               # Description:	Binary tree traversal functions.
+   8 0000               #
+   9 0000               # Revisions:	$Log$
+  10 0000               
+  11 0000               
+  12 0000               # CONSTANTS
+  13 0000               #
+  14 0000               
+  15 0000               # traversal codes
+  16 0000               PRE_ORDER  = 0
+  17 0000               IN_ORDER   = 1
+  18 0000               POST_ORDER = 2
+  19 0000               
+  20 0000               	.text			# this is program code
+  21 0000               	.align 2		# instructions must be on word boundaries
+  22 0000               
+  23 0000               #***** BEGIN STUDENT CODE BLOCK 3 *****************************
+  24 0000               #
+  25 0000               # Put your traverse_tree subroutine here.
+  26 0000               # 
+  27 0000               
+  28 0000               	.globl	traverse_tree
+  29 0000               	.globl	print_func1
+  30 0000               	.globl	print_func2
+  31 0000                       .globl  main
+  32 0000               
+  33 0000               # register a0 is the root address
+  34 0000               # register a1 is the address of the print function to use
+  35 0000               # register a2 is the type of traversal to make (either 0,1,2)
+  36 0000               
+  37 0000                       # figure out the travseral and then perform that particular version
+  38 0000               
+  39 0000               
+  40 0000               traverse_tree:
+  41 0000                       # We already know which thing we're trying to do
+  42 0000                       # Pre order is root, left, right
+  43 0000                       # we print the root. 
+  44 0000                       # we then go to the left
+  45 0000                       # we then go to the right
+  46 0000 23BDFFE8	        addi    $sp, $sp, -24
+  47 0004 AFBF0000	        sw      $ra, 0($sp)
+  48 0008 AFB00004	        sw      $s0, 4($sp)
+  49 000c AFB10008	        sw      $s1, 8($sp)
+  50 0010 AFB2000C	        sw      $s2, 12($sp)
+  51 0014 AFB30010	        sw      $s3, 16($sp)
+  52 0018 AFB40014	        sw      $s4, 20($sp)
+  53 001c               
+  54 001c               bounds_stuff:
+  55 001c 00808821	        move    $s1, $a0        # store the values of the root node into a safe
+  56 0020                                               # register 
+  57 0020 34140000	        li      $s4, PRE_ORDER
+  58 0024 10D40017	        beq     $a2, $s4, print_root_pre
+  59 0028 34140001	        li      $s4, IN_ORDER
+  60 002c 10D4000C	        beq     $a2, $s4, check_left_in
+  61 0030 34140002	        li      $s4, POST_ORDER
+  62 0034 10D40001	        beq     $a2, $s4, check_left_post
+  63 0038 08000029	        j       traverse_done
+  64 003c               
+  65 003c               check_left_post:
+  66 003c               # Check if there's anything to the left
+  67 003c 8E240004	        lw      $a0, 4($s1)
+  68 0040 10800001	        beq     $a0, $zero, check_right_post       # goto print if no left
+  69 0044 0C000000	        jal     traverse_tree
+  70 0048                       
+  71 0048               
+  72 0048               check_right_post:
+  73 0048                       # check if there's anything to the right
+  74 0048 8E240008	        lw      $a0, 8($s1)
+  75 004c 10800001	        beq     $a0, $zero, print_root_post       # goto print if no left
+  76 0050 0C000000	        jal     traverse_tree
+  77 0054               
+  78 0054               print_root_post:
+  79 0054                       # check if there's anything straight ahead
+  80 0054 02202021	        move    $a0, $s1
+  81 0058 0C000000	        jal     print_func1
+  82 005c 08000029	        j       traverse_done
+  83 0060                       
+  84 0060               check_left_in:
+  85 0060                       # visit all left nodes first
+  86 0060 8E240004	        lw      $a0, 4($s1)                     # load left value of left node into a0
+  87 0064 10800001	        beq     $a0, $zero, print_root_in       # if left node doesn't exist, we print the root
+  88 0068 0C000000	        jal     traverse_tree                   # if node does exist, we call traverse on that node
+  89 006c                       
+  90 006c               print_root_in:
+  91 006c 02202021	        move    $a0, $s1                        # move a0 back to the value
+  92 0070 0C000000	        jal     print_func2                     # print what's stored at a0
+  93 0074 0800001E	        j       check_right_in                  # do the right node stuff
+  94 0078               
+  95 0078               check_right_in:
+  96 0078 8E240008	        lw      $a0, 8($s1)                     # load the node on the right
+  97 007c 10800009	        beq     $a0, $zero, traverse_done       # if right node doesn't exist, exit recursion
+  98 0080 0C000000	        jal     traverse_tree                   # perform recursion on right node if it exists
+  99 0084               
+ 100 0084               print_root_pre:
+ 101 0084               # print the root
+ 102 0084 0C000000	        jal     print_func1
+ 103 0088 08000023	        j       check_left_pre
+ 104 008c                       # fall through is okay (one less instruction this way)
+ 105 008c               
+ 106 008c               check_left_pre:
+ 107 008c               # check if left exists, then visit it
+ 108 008c 8E240004	        lw      $a0, 4($s1)
+ 109 0090 10800001	        beq     $a0, $zero, check_right_pre
+ 110 0094 0C000000	        jal     traverse_tree
+ 111 0098               
+ 112 0098               check_right_pre:
+ 113 0098               # check if right exists, then visit it
+ 114 0098               # otherwise, quit
+ 115 0098 8E240008	        lw      $a0, 8($s1)
+ 116 009c 10800001	        beq     $a0, $zero, traverse_done
+ 117 00a0 0C000000	        jal     traverse_tree
+ 118 00a4               
+ 119 00a4               traverse_done:
+ 120 00a4 8FBF0000	        lw      $ra, 0($sp)
+ 121 00a8 8FB00004	        lw      $s0, 4($sp)
+ 122 00ac 8FB10008	        lw      $s1, 8($sp)
+ 123 00b0 8FB2000C	        lw      $s2, 12($sp)
+ 124 00b4 8FB30010	        lw      $s3, 16($sp)
+ 125 00b8 8FB40014	        lw      $s4, 20($sp)
+ 126 00bc 23BD0018	        addi    $sp, $sp, 24
+ 127 00c0 03E00008	        jr      $ra
+ 128 00c4               
+ 129 00c4               #***** END STUDENT CODE BLOCK 3 *****************************
+
+
+IN_ORDER          = 00000001   
+POST_ORDER        = 00000002   
+PRE_ORDER         = 00000000   
+bounds_stuff        0000001C R  text 
+check_left_in       00000060 R  text 
+check_left_post     0000003C R  text 
+check_left_pre      0000008C R  text 
+check_right_in      00000078 R  text 
+check_right_post    00000048 R  text 
+check_right_pre     00000098 R  text 
+main                ******** XG
+print_func1         ******** XG
+print_func2         ******** XG
+print_root_in       0000006C R  text 
+print_root_post     00000054 R  text 
+print_root_pre      00000084 R  text 
+traverse_done       000000A4 R  text 
+traverse_tree       00000000 RG text 

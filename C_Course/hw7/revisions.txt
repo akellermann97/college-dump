@@ -1,0 +1,53 @@
+commit b57d84a95f34876cf4adede54e36fdad4b96583e
+Author: jeremy <jerelefurge@gmail.com>
+Date:   Wed Nov 16 23:17:06 2016 -0500
+
+    I'm retarded
+
+commit 0c126b33cf17de71d7d0ee44b01de85acec07706
+Author: jeremy <jerelefurge@gmail.com>
+Date:   Wed Nov 16 23:16:05 2016 -0500
+
+    Fuck try
+
+commit 62331c800bc41486269960303edb73d50118bfc3
+Author: jeremy <jerelefurge@gmail.com>
+Date:   Wed Nov 16 23:12:14 2016 -0500
+
+    Pedantic
+
+commit d24384ae03afd0359c0cf6256ee92e4ef02c4571
+Author: jeremy <jerelefurge@gmail.com>
+Date:   Wed Nov 16 23:11:02 2016 -0500
+
+    Finished remaining problems
+
+commit 2ff730c8e2fb4147b136886f567262356a624814
+Author: jeremy <jerelefurge@gmail.com>
+Date:   Wed Nov 16 17:44:40 2016 -0500
+
+    Fixed some stuff
+
+commit 52de7f465d9b8b5ec18fbda6f85b0400d0402296
+Author: jeremy <jerelefurge@gmail.com>
+Date:   Wed Nov 16 17:37:17 2016 -0500
+
+    Fixed some stuff
+
+commit a72ff4581ce0168c01ccfc1d9d8ee05668f36a6a
+Author: jeremy <jerelefurge@gmail.com>
+Date:   Wed Nov 16 15:05:10 2016 -0500
+
+    Comments
+
+commit 9269ad4f5d8d3972b7881b1447f2e8db5616740b
+Author: jeremy <jerelefurge@gmail.com>
+Date:   Wed Nov 16 14:49:32 2016 -0500
+
+    Implemented more set functions
+
+commit 68e2900ec1ff3b2789ba2e6a54d96551d5ff75bb
+Author: jeremy <jerelefurge@gmail.com>
+Date:   Wed Nov 16 13:48:38 2016 -0500
+
+    Initial commit

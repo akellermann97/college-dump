@@ -1,0 +1,7 @@
+admin
+console
+settings
+users
+instructions
+setup
+instructions.php

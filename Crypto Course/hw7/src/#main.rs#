@@ -1,0 +1,34 @@
+// Author: Alexander Kellermann Nieves
+
+extern crate rand; // Rust does not have a random number generator as
+// part of its standard library yet.
+
+fn modulo(base: i64, exponent: i64, modulo: i64) -> i64 {
+    let mut x: i64 = 1;
+    let mut y: i64 = base;
+    while exponent > 0 {
+        if exponent % 2 == 1 {
+            x = (x * y) % modulo;
+        }
+        y = (y * y) % modulo;
+        exponent = exponent / 2;
+    }
+    return x % modulo;
+}
+
+fn fermat(p: i64, iterations: i64) -> i64 {
+    let mut i: i64;
+    if p == 1 {
+        return 0;
+    }
+    for thing in 0..iterations {
+        let mut a: i64;
+            rand::random::<i64>() % (p - 1) + 1;
+
+    }
+    return 53;
+}
+
+fn main(){
+    return 
+}

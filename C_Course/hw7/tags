@@ -1,0 +1,55 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/249c3c0/
+.C.a	Makefile	/^.C.a:$/;"	t
+.C.o	Makefile	/^.C.o:$/;"	t
+.S.s	Makefile	/^.S.s:$/;"	t
+.c.a	Makefile	/^.c.a:$/;"	t
+.c.o	Makefile	/^.c.o:$/;"	t
+.cpp.a	Makefile	/^.cpp.a:$/;"	t
+.cpp.o	Makefile	/^.cpp.o:$/;"	t
+.s.o	Makefile	/^.s.o:$/;"	t
+AR	Makefile	/^AR = ar$/;"	m
+Archive	Makefile	/^Archive:	archive.tgz$/;"	t
+CC	Makefile	/^CC =		gcc$/;"	m
+CCLIBFLAGS	Makefile	/^CCLIBFLAGS =	$/;"	m
+CFLAGS	Makefile	/^CFLAGS =	-ggdb$/;"	m
+CLIBFLAGS	Makefile	/^CLIBFLAGS =	-lm$/;"	m
+COMPILE.c	Makefile	/^COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) -c$/;"	m
+COMPILE.cc	Makefile	/^COMPILE.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) -c$/;"	m
+CPP	Makefile	/^CPP = $(CPP) $(CPPFLAGS)$/;"	m
+CPP_FILES	Makefile	/^CPP_FILES =	$/;"	m
+CXX	Makefile	/^CXX =		g++$/;"	m
+CXXFLAGS	Makefile	/^CXXFLAGS =	-ggdb$/;"	m
+C_FILES	Makefile	/^C_FILES =	file-bitsets.c$/;"	m
+DAMIGHTYSTRING	file-bitsets.c	/^#define DAMIGHTYSTRING /;"	d	file:
+H_FILES	Makefile	/^H_FILES =	$/;"	m
+LINK.c	Makefile	/^LINK.c = $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)$/;"	m
+LINK.cc	Makefile	/^LINK.cc = $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS)$/;"	m
+MAXBUFSIZE	file-bitsets.c	/^#define MAXBUFSIZE /;"	d	file:
+OBJFILES	Makefile	/^OBJFILES =	$/;"	m
+PS_FILES	Makefile	/^PS_FILES =	$/;"	m
+SOURCEFILES	Makefile	/^SOURCEFILES =	$(H_FILES) $(CPP_FILES) $(C_FILES) $(S_FILES)$/;"	m
+S_FILES	Makefile	/^S_FILES =	$/;"	m
+all	Makefile	/^all:	file-bitsets $/;"	t
+archive.tgz	Makefile	/^archive.tgz:	$(SOURCEFILES) Makefile$/;"	t
+char_bit	file-bitsets.c	/^int char_bit(char daCharacter) {$/;"	f	typeref:typename:int
+clean	Makefile	/^clean:$/;"	t
+decimalToBinary	file-bitsets.c	/^void decimalToBinary(uint64_t decimal, char* binNum) {$/;"	f	typeref:typename:void
+file-bitsets	Makefile	/^file-bitsets:	file-bitsets.o $(OBJFILES)$/;"	t
+file-bitsets.o	Makefile	/^file-bitsets.o:	$/;"	t
+file_set_encode	file-bitsets.c	/^uint64_t file_set_encode(FILE* fp) {$/;"	f	typeref:typename:uint64_t
+main	file-bitsets.c	/^int main(int argc, char* argv[]) {$/;"	f	typeref:typename:int
+realclean	Makefile	/^realclean:        clean$/;"	t
+set_cardinality	file-bitsets.c	/^size_t set_cardinality(uint64_t set) {$/;"	f	typeref:typename:size_t
+set_complement	file-bitsets.c	/^uint64_t set_complement(uint64_t first_set) {$/;"	f	typeref:typename:uint64_t
+set_decode	file-bitsets.c	/^char * set_decode(uint64_t set) {$/;"	f	typeref:typename:char *
+set_difference	file-bitsets.c	/^uint64_t set_difference(uint64_t first_set, uint64_t second_set) {$/;"	f	typeref:typename:uint64_t
+set_encode	file-bitsets.c	/^uint64_t set_encode(char* st) {$/;"	f	typeref:typename:uint64_t
+set_intersect	file-bitsets.c	/^uint64_t set_intersect(uint64_t first_set, uint64_t second_set) {$/;"	f	typeref:typename:uint64_t
+set_symdifference	file-bitsets.c	/^uint64_t set_symdifference(uint64_t first_set, uint64_t second_set) {$/;"	f	typeref:typename:uint64_t
+set_union	file-bitsets.c	/^uint64_t set_union(uint64_t first_set, uint64_t second_set) {$/;"	f	typeref:typename:uint64_t

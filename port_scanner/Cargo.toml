@@ -1,0 +1,7 @@
+[package]
+name = "port_scanner"
+version = "0.1.0"
+authors = ["Dormio <alex.kellermann@live.com>"]
+
+[dependencies]
+getopts = "0.2"

@@ -1,0 +1,39 @@
+commit 19910343296e740b56a8ddf748bf1a84b6bb2188
+Author: Dormio <alex.kellermann@live.com>
+Date:   Fri Sep 30 23:20:26 2016 -0400
+
+    Fixed up some sloppy comments, now everything will be moved to CS machines,
+    godspeed
+
+commit da9c4487db96697ff4fae8f2f2a8c34dc4e7d5d4
+Author: Dormio <alex.kellermann@live.com>
+Date:   Fri Sep 30 23:11:57 2016 -0400
+
+    Final commit before moving towards CS machines for submitting
+
+commit 6700516e3245e1532288a05bdb3e2cc84771fbf9
+Author: Dormio <alex.kellermann@live.com>
+Date:   Fri Sep 30 18:05:28 2016 -0400
+
+    Over 80% done with project. Need to finish command line portion, as well as
+    polish up the 4th option, and start the 3rd one
+
+commit b04c86deb951f245f39a20d83f0aa60dd06f78c3
+Author: Dormio <alex.kellermann@live.com>
+Date:   Fri Sep 30 00:17:19 2016 -0400
+
+    Edited makefile to include conversion headers, wanted to save status before
+    offically running the handmade makefile
+
+commit 79acfc43a6e191e2ecd0a74bb3c025977f9ab505
+Author: Dormio <alex.kellermann@live.com>
+Date:   Sat Sep 17 00:38:10 2016 -0400
+
+    Added the beginning of a while loop for ahnentafel.c and added a binary to
+    decimal conversion method
+
+commit 7f97d9d3db3bee8e27a59735e39b2e056c28a66d
+Author: Dormio <alex.kellermann@live.com>
+Date:   Fri Sep 16 01:01:29 2016 -0400
+
+    Added decimal_to_binary conversion in conversions.c

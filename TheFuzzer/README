@@ -1,0 +1,30 @@
+This program is written in Python 3 and has the following depedencies:
+
+DEPEDENCIES:
+Requests (requests)
+BeautifulSoup (bs4)
+
+In order for part 0 to be run successfully the command is as follows:
+$ python3 fuzz.py test http://localhost/ --custom-auth=dvwa
+
+Any URL should work as long as it correctly points to a DVWA login page. 
+If it's pointed to the page that asks DVWA to be set up (the create/destroy
+database page) it will not work. It needs to be pointed to a page that will
+either redirect to the login page or the login page.
+
+Part 1 - discover can be run using the following command
+$ python3 fuzz.py discover http://localhost --custom-auth=dvwa
+
+Part 2 - Test can be run using the following command
+$ python3 fuzz.py test  http://localhost --custom-auth=dvwa --common-words=guessList.txt --slow=500 --vectors=vectors.txt
+
+Note that supplying additional arguments that are relevant in part 2 to part 1
+will not have any effect. Part 1 has been improved and more cookie finding functionality
+has been added since its initial implementation.
+
+The --common-words flag is implemented
+The --vectors flag is implemented. Note that the headers of each section start with a '#' and then the vectors themselves
+fall directly underneath them. Each heading is seperated by a line only containing '\n'. Any other format will not work 
+correctly.
+
+Thanks for grading my project!

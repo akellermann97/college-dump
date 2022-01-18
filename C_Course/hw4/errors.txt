@@ -1,0 +1,14 @@
+Creating a time...
+Starting song tests...
+First song initialized...
+The current song1 song is: Summer Days by Beach Boys.
+Otherwise... Title: Summer Days  Artist: Beach Boys
+After playing the song... Title: Summer Days  Artist: Beach Boys at  6:30pm
+The same song referencing members is: Summer Days by Beach Boys. Last played at:  6:30pm
+The song2 song is: Title: The Black Hole  Artist: Goo Goo Dolls
+The copy of song2 song is: Title: The Black Hole  Artist: Goo Goo Dolls 
+After deleting the original, the copy of song2 song is ... Title: The Black Hole  Artist: Goo Goo Dolls
+The song3 song Title: The Black Hole  Artist: Goo Goo Dolls
+    is the same as song1 song Title: The Black Hole  Artist: Goo Goo Dolls
+The current song3 song is: Title: Its a Beatiful Morning  Artist: Chicago
+The current song3 song is: Title: Its a Beatiful Morning  Artist: Chicago at  4:42am

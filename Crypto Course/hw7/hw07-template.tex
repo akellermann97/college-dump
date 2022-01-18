@@ -1,0 +1,106 @@
+\documentclass[12pt]{article}
+\usepackage{mathtools}
+\usepackage{amsfonts}
+\usepackage{tikz}
+
+
+\usetikzlibrary{chains, positioning, shapes, arrows, matrix, calc, fit}
+\tikzset{circ/.style={draw,circle,node distance=2mm,inner sep=0.1pt},topath/.style={to path={|-(\tikztotarget)}}}
+
+
+
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{\oddsidemargin}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{9in}
+\setlength{\topmargin}{-0.25in}
+\newcommand{\bb}{$\Box$}
+\newcommand{\sline} {$\mbox{\underline{\hspace{4cm}}}$}
+\newcommand{\lline} {$\mbox{\underline{\hspace{4cm}}}$}
+\newcommand{\llline} {$\mbox{\underline{\hspace{8cm}}}$}
+
+\newcommand{\double}{\mbox{\em double}}
+\pagestyle{empty}
+
+\begin{document}
+\begin{center}
+{\bf 
+Introduction to Cryptography (462) \\
+Homework 07\\
+T.J. Borrelli\\
+Due: Thursday, November 30th, 2017 at 2pm
+}
+
+\end{center}
+
+
+
+\begin{itemize}
+\item Be sure to put your NAME and Section number on the first page. 
+\item If you upload your submission to the myCourses dropbox, I will only accept .pdf format and only the last thing you submit will be accepted. 
+\item This homework is related to Chapter 7 in the Paar and Pelzl (P\&P) book and notes. 
+\item This is the last graded hw. 
+\item {\bf For each question, show the details of your computation unless otherwise specified. } 
+\end{itemize}
+
+
+
+
+
+\begin{enumerate}
+
+
+
+
+
+\vspace{.25cm}
+
+% Q1 - RSA
+\item
+Encrypt and decrypt by means of the RSA algorithm with the following system parameters: 
+
+\begin{enumerate}
+
+\item
+$p=3, q=11, d=7, x = 5$ 
+
+\item
+$p=5, q=11, e=3, x=9$ \\
+\end{enumerate}
+
+
+\vspace{.5cm}
+
+%Q2 - CRT
+\item
+Consider moduli 11 and 13 in the Chinese Remainder Theorem. What numbers are represented by the pairs (1,0), (4,5) and (5,4)? Show the details of your work.
+
+\vspace{.5cm}
+
+% Q3 - CRT
+\item
+Find two non-standard roots (not 1, nor -1) of $\sqrt{1}$ in $\mathbb{Z}_{77}$.
+
+ %$\mathbb{Z}_{m}$.
+
+\vspace{.5cm}
+
+
+% Q4 - primality
+\item
+Use your favorite programming language to implement the Fermat Primality Test.  
+(Note: your program should use the Square-and-Multiply algorithm from last time.) \\
+
+Use your program to find  the last three Carmichael numbers less than $10^{6}$ and
+the last three Carmichael numbers less than $10^{7}$.  \\
+
+Submit your code in the PDF file as usual. 
+
+
+\end{enumerate}
+\end{document}

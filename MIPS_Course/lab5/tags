@@ -1,0 +1,86 @@
+$a0	allocate.lst	79
+$a1	tree.lst	355
+$t0	tree.lst	170
+$t0	tree.lst	355
+$t1	tree.lst	166
+$t1	tree.lst	351
+$t2	tree.lst	165
+$t2	tree.lst	170
+$t3	tree.lst	168
+$v0	allocate.lst	78
+$v0	allocate.lst	83
+$v0	allocate.lst	91
+.SUFFIXES	Makefile	/^.SUFFIXES:	.asm .obj .lst .out$/
+.asm.obj	Makefile	/^.asm.obj:$/
+.obj.out	Makefile	/^.obj.out:$/
+EXIT	allocate.asm	/^EXIT = 		10$/
+EXIT	tree.asm	/^EXIT = 		10$/
+IN_ORDER	traverse.asm	/^IN_ORDER   = 1$/
+IN_ORDER	tree.asm	/^IN_ORDER   = 1$/
+Mtree.asm	tree.asm	/^main:$/
+OBJECTS	Makefile	/^OBJECTS = tree.obj allocate.obj build.obj traverse/
+POST_ORDER	traverse.asm	/^POST_ORDER = 2$/
+POST_ORDER	tree.asm	/^POST_ORDER = 2$/
+PRE_ORDER	traverse.asm	/^PRE_ORDER  = 0$/
+PRE_ORDER	tree.asm	/^PRE_ORDER  = 0$/
+PRINT_INT	tree.asm	/^PRINT_INT = 	1$/
+PRINT_INT	tree.lst	17
+PRINT_STRING	allocate.asm	/^PRINT_STRING = 	4$/
+PRINT_STRING	tree.asm	/^PRINT_STRING = 	4$/
+RASM	Makefile	/^RASM  = \/home\/fac\/wrc\/bin\/rasm$/
+READ_INT	tree.asm	/^READ_INT = 	5$/
+RLINK	Makefile	/^RLINK = \/home\/fac\/wrc\/bin\/rlink$/
+RSIM	Makefile	/^RSIM  = \/home\/fac\/wrc\/bin\/rsim$/
+White	tree.lst	3
+add_done	build.asm	/^add_done:$/
+add_elements	build.asm	/^add_elements:$/
+allocate_mem	allocate.asm	/^allocate_mem:$/
+bounds_stuff	traverse.asm	/^bounds_stuff:$/
+build	tree.asm	/^build:	$/
+build_tree	build.asm	/^build_tree:$/
+check_left	traverse.asm	/^check_left:$/
+check_right	traverse.asm	/^check_right:$/
+data_msg	tree.asm	/^data_msg:	$/
+input	tree.lst	6
+input_array	tree.asm	/^input_array:		# room for input values, size for 20/
+main_done	tree.asm	/^main_done:$/
+map	tree.map	1
+msg1	tree.asm	/^msg1:	$/
+msg2	tree.asm	/^msg2:	$/
+msg3	tree.asm	/^msg3:$/
+msg4	tree.asm	/^msg4:$/
+n12	tree.asm	/^n12:	.word	12, 0, n16$/
+n16	tree.asm	/^n16:	.word	16, 0, 0$/
+n3	tree.asm	/^n3:	.word	3, 0, n4$/
+n4	tree.asm	/^n4:	.word	4, 0, 0$/
+n7	tree.asm	/^n7:	.word	7, 0, 0$/
+n9	tree.asm	/^n9:	.word	9, n7, n12$/
+new_error	allocate.asm	/^new_error:$/
+new_line	tree.asm	/^new_line:$/
+new_mem_ok	allocate.asm	/^new_mem_ok:$/
+next	allocate.asm	/^next:	$/
+pa_done	tree.asm	/^pa_done:$/
+pa_loop	tree.asm	/^pa_loop:	$/
+perform_traversals	tree.asm	/^perform_traversals:$/
+pool	allocate.asm	/^pool:	$/
+pool_end	allocate.asm	/^pool_end:		# a marker for the end of the free spac/
+preorder	tree.lst	8
+print_array	tree.asm	/^print_array:$/
+print_func1	tree.asm	/^print_func1:$/
+print_func2	tree.asm	/^print_func2:$/
+print_func3	tree.asm	/^print_func3:$/
+print_root	traverse.asm	/^print_root:$/
+ptr_root	tree.asm	/^ptr_root:$/
+ptr_tree1	tree.asm	/^ptr_tree1:$/
+quote	tree.asm	/^quote:$/
+ra_done	tree.asm	/^ra_done:$/
+ra_loop	tree.asm	/^ra_loop:	$/
+run	Makefile	/^run:	tree.out$/
+running_total	tree.asm	/^running_total:		# running total for fourth travers/
+space	tree.asm	/^space:$/
+traverse	tree.asm	/^traverse:	$/
+traverse_pre_done	traverse.asm	/^traverse_pre_done:$/
+traverse_preorder	traverse.asm	/^traverse_preorder:$/
+traverse_tree	traverse.asm	/^traverse_tree:$/
+tree.out	Makefile	/^tree.out:	$(OBJECTS)$/
+tree1	tree.asm	/^tree1:	.word	6, n3, n9$/

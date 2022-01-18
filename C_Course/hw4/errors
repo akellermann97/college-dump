@@ -1,0 +1,392 @@
+==4766== Memcheck, a memory error detector
+==4766== Copyright (C) 2002-2015, and GNU GPL'd, by Julian Seward et al.
+==4766== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==4766== Command: ./songtest
+==4766== Parent PID: 4703
+==4766== 
+==4766== Invalid write of size 1
+==4766==    at 0x4C31060: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010CF: songCopy (song.c:102)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766==  Address 0x5203e39 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid write of size 1
+==4766==    at 0x4C3106F: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010CF: songCopy (song.c:102)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766==  Address 0x5203e3d is 4 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid write of size 1
+==4766==    at 0x4C31060: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010FF: songCopy (song.c:105)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766==  Address 0x5203e89 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid write of size 1
+==4766==    at 0x4C3106F: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010FF: songCopy (song.c:105)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766==  Address 0x5203e8e is 5 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C30F74: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F79: songGetTitle (song.c:61)
+==4766==    by 0x401180: songToString (song.c:130)
+==4766==    by 0x4009EE: main (songtest.c:83)
+==4766==  Address 0x5203e89 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31063: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400FA0: songGetTitle (song.c:62)
+==4766==    by 0x401180: songToString (song.c:130)
+==4766==    by 0x4009EE: main (songtest.c:83)
+==4766==  Address 0x5203e89 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C30F74: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F29: songGetArtist (song.c:53)
+==4766==    by 0x401190: songToString (song.c:131)
+==4766==    by 0x4009EE: main (songtest.c:83)
+==4766==  Address 0x5203e39 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31063: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F4F: songGetArtist (song.c:54)
+==4766==    by 0x401190: songToString (song.c:131)
+==4766==    by 0x4009EE: main (songtest.c:83)
+==4766==  Address 0x5203e39 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C30F74: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F79: songGetTitle (song.c:61)
+==4766==    by 0x401180: songToString (song.c:130)
+==4766==    by 0x400A20: main (songtest.c:86)
+==4766==  Address 0x5203e89 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31063: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400FA0: songGetTitle (song.c:62)
+==4766==    by 0x401180: songToString (song.c:130)
+==4766==    by 0x400A20: main (songtest.c:86)
+==4766==  Address 0x5203e89 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C30F74: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F29: songGetArtist (song.c:53)
+==4766==    by 0x401190: songToString (song.c:131)
+==4766==    by 0x400A20: main (songtest.c:86)
+==4766==  Address 0x5203e39 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31063: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F4F: songGetArtist (song.c:54)
+==4766==    by 0x401190: songToString (song.c:131)
+==4766==    by 0x400A20: main (songtest.c:86)
+==4766==  Address 0x5203e39 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31063: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010CF: songCopy (song.c:102)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766==  Address 0x5203e39 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid write of size 1
+==4766==    at 0x4C31060: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010CF: songCopy (song.c:102)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766==  Address 0x5204159 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766== 
+==4766== Invalid write of size 1
+==4766==    at 0x4C3106F: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010CF: songCopy (song.c:102)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766==  Address 0x520415d is 4 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31063: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010FF: songCopy (song.c:105)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766==  Address 0x5203e89 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid write of size 1
+==4766==    at 0x4C31060: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010FF: songCopy (song.c:105)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766==  Address 0x52041a9 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766== 
+==4766== Invalid write of size 1
+==4766==    at 0x4C3106F: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010FF: songCopy (song.c:105)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766==  Address 0x52041ae is 5 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31FB4: strcmp (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x401047: songEquals (song.c:85)
+==4766==    by 0x400A5D: main (songtest.c:92)
+==4766==  Address 0x5203e39 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31FB7: strcmp (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x401047: songEquals (song.c:85)
+==4766==    by 0x400A5D: main (songtest.c:92)
+==4766==  Address 0x5204159 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31FB4: strcmp (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x401066: songEquals (song.c:86)
+==4766==    by 0x400A5D: main (songtest.c:92)
+==4766==  Address 0x5203e89 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31FB7: strcmp (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x401066: songEquals (song.c:86)
+==4766==    by 0x400A5D: main (songtest.c:92)
+==4766==  Address 0x52041a9 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C30F74: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F79: songGetTitle (song.c:61)
+==4766==    by 0x401180: songToString (song.c:130)
+==4766==    by 0x400A6D: main (songtest.c:94)
+==4766==  Address 0x5203e89 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31063: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400FA0: songGetTitle (song.c:62)
+==4766==    by 0x401180: songToString (song.c:130)
+==4766==    by 0x400A6D: main (songtest.c:94)
+==4766==  Address 0x5203e89 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C30F74: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F29: songGetArtist (song.c:53)
+==4766==    by 0x401190: songToString (song.c:131)
+==4766==    by 0x400A6D: main (songtest.c:94)
+==4766==  Address 0x5203e39 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31063: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F4F: songGetArtist (song.c:54)
+==4766==    by 0x401190: songToString (song.c:131)
+==4766==    by 0x400A6D: main (songtest.c:94)
+==4766==  Address 0x5203e39 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C30F74: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F79: songGetTitle (song.c:61)
+==4766==    by 0x401180: songToString (song.c:130)
+==4766==    by 0x400A7D: main (songtest.c:95)
+==4766==  Address 0x52041a9 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31063: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400FA0: songGetTitle (song.c:62)
+==4766==    by 0x401180: songToString (song.c:130)
+==4766==    by 0x400A7D: main (songtest.c:95)
+==4766==  Address 0x52041a9 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C30F74: strlen (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F29: songGetArtist (song.c:53)
+==4766==    by 0x401190: songToString (song.c:131)
+==4766==    by 0x400A7D: main (songtest.c:95)
+==4766==  Address 0x5204159 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766== 
+==4766== Invalid read of size 1
+==4766==    at 0x4C31063: strcpy (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400F4F: songGetArtist (song.c:54)
+==4766==    by 0x401190: songToString (song.c:131)
+==4766==    by 0x400A7D: main (songtest.c:95)
+==4766==  Address 0x5204159 is 0 bytes after a block of size 9 alloc'd
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766== 
+==4766== Invalid free() / delete / delete[] / realloc()
+==4766==    at 0x4C2EDEB: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400ED6: songDelete (song.c:41)
+==4766==    by 0x400B68: main (songtest.c:117)
+==4766==  Address 0x5203e30 is 0 bytes inside a block of size 9 free'd
+==4766==    at 0x4C2EDEB: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400ED6: songDelete (song.c:41)
+==4766==    by 0x400ACB: main (songtest.c:105)
+==4766==  Block was alloc'd at
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010AC: songCopy (song.c:101)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== Invalid free() / delete / delete[] / realloc()
+==4766==    at 0x4C2EDEB: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400EE6: songDelete (song.c:43)
+==4766==    by 0x400B68: main (songtest.c:117)
+==4766==  Address 0x5203e80 is 0 bytes inside a block of size 9 free'd
+==4766==    at 0x4C2EDEB: free (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400EE6: songDelete (song.c:43)
+==4766==    by 0x400ACB: main (songtest.c:105)
+==4766==  Block was alloc'd at
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4010D9: songCopy (song.c:104)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== 
+==4766== HEAP SUMMARY:
+==4766==     in use at exit: 436 bytes in 12 blocks
+==4766==   total heap usage: 60 allocs, 50 frees, 2,099 bytes allocated
+==4766== 
+==4766== 24 bytes in 1 blocks are definitely lost in loss record 1 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400E33: newSong (song.c:22)
+==4766==    by 0x4007C8: main (songtest.c:43)
+==4766== 
+==4766== 24 bytes in 1 blocks are definitely lost in loss record 2 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400E33: newSong (song.c:22)
+==4766==    by 0x400990: main (songtest.c:76)
+==4766== 
+==4766== 24 bytes in 1 blocks are definitely lost in loss record 3 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x40109E: songCopy (song.c:99)
+==4766==    by 0x4009DE: main (songtest.c:82)
+==4766== 
+==4766== 24 bytes in 1 blocks are definitely lost in loss record 4 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x40109E: songCopy (song.c:99)
+==4766==    by 0x400A46: main (songtest.c:91)
+==4766== 
+==4766== 24 bytes in 1 blocks are definitely lost in loss record 5 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x400E33: newSong (song.c:22)
+==4766==    by 0x400ADA: main (songtest.c:107)
+==4766== 
+==4766== 39 bytes in 1 blocks are definitely lost in loss record 6 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4011FD: songToString (song.c:144)
+==4766==    by 0x400834: main (songtest.c:52)
+==4766== 
+==4766== 45 bytes in 1 blocks are definitely lost in loss record 7 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4011FD: songToString (song.c:144)
+==4766==    by 0x4009B8: main (songtest.c:79)
+==4766== 
+==4766== 45 bytes in 1 blocks are definitely lost in loss record 8 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4011FD: songToString (song.c:144)
+==4766==    by 0x4009EE: main (songtest.c:83)
+==4766== 
+==4766== 45 bytes in 1 blocks are definitely lost in loss record 9 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4011FD: songToString (song.c:144)
+==4766==    by 0x400A20: main (songtest.c:86)
+==4766== 
+==4766== 45 bytes in 1 blocks are definitely lost in loss record 10 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4011FD: songToString (song.c:144)
+==4766==    by 0x400A6D: main (songtest.c:94)
+==4766== 
+==4766== 47 bytes in 1 blocks are definitely lost in loss record 11 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4011FD: songToString (song.c:144)
+==4766==    by 0x400AEA: main (songtest.c:108)
+==4766== 
+==4766== 50 bytes in 1 blocks are definitely lost in loss record 12 of 12
+==4766==    at 0x4C2DB8F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==4766==    by 0x4011FD: songToString (song.c:144)
+==4766==    by 0x40086D: main (songtest.c:56)
+==4766== 
+==4766== LEAK SUMMARY:
+==4766==    definitely lost: 436 bytes in 12 blocks
+==4766==    indirectly lost: 0 bytes in 0 blocks
+==4766==      possibly lost: 0 bytes in 0 blocks
+==4766==    still reachable: 0 bytes in 0 blocks
+==4766==         suppressed: 0 bytes in 0 blocks
+==4766== 
+==4766== For counts of detected and suppressed errors, rerun with: -v
+==4766== ERROR SUMMARY: 157 errors from 44 contexts (suppressed: 0 from 0)
